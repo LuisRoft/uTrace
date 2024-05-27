@@ -1,15 +1,23 @@
-import { Text, View } from "react-native";
+import { ThemedText } from "@/components/ThemedText";
+import { router } from "expo-router";
+import { Button, View } from "react-native";
 
-export default function Index() {
+export default function Login() {
+  const handleLogin = () => {
+    router.push('(tabs)');
+  };
+  
   return (
     <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <ThemedText type='title'>Hola</ThemedText>
+      <Button title="Login" onPress={handleLogin} />
     </View>
   );
 }
