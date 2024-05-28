@@ -2,12 +2,12 @@ import { Text, type TextProps, StyleSheet } from 'react-native';
 
 import { useThemeColor } from '@/hooks/useThemeColor';
 
-const fontFamily = 'Blinker';
+const fontFamily = 'Blinker-Regular';
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'superTitle';
 };
 
 
@@ -29,6 +29,7 @@ export function ThemedText({
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
+        type === 'superTitle' ? styles.superTitle : undefined,
         style,
       ]}
       {...rest}
@@ -50,6 +51,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     lineHeight: 32,
+  },
+  superTitle: {
+    fontSize: 60,
+    fontWeight: 900,
+    lineHeight: 80,
+    fontFamily: 'Blinker-Bold',
   },
   subtitle: {
     fontSize: 20,

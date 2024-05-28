@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text, TouchableOpacityProps } from 'react-native';
+import { ThemedText } from './ThemedText';
 
 export type ButtonFormProps = TouchableOpacityProps & {
     text: string;
@@ -7,24 +8,25 @@ export type ButtonFormProps = TouchableOpacityProps & {
 export function ButtonForm({ text, ...rest }: ButtonFormProps) {
   return (
     <TouchableOpacity style={styles.button} {...rest}>
-      <Text style={styles.buttonText}>{text}</Text>
+      <ThemedText style={styles.buttonText}>{text}</ThemedText>
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    width: '100%',
     borderColor: '#000',
     borderRadius: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
+    paddingVertical: 13,
+    paddingHorizontal: 32,
     borderWidth: 1,
+    marginTop: 20,
+    marginBottom: 40,
   },
   buttonText: {
     color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Blinker-Bold',
+    fontSize: 19,
     textAlign: 'center',
   },
 });
