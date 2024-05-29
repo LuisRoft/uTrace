@@ -4,13 +4,15 @@ import Flags from '@/components/State_card/Flags';
 
 
 interface CardProps {
+  color: string;
   imageUrl: string;
   emotion: string;
   description: string;
   date: string;
+  flags: Array<string>;
 }
 
-export const StateCard: React.FC<CardProps> = ({ imageUrl, emotion, description, date}) => {
+export const StateCard: React.FC<CardProps> = ({ color, imageUrl, emotion, description, date, flags}) => {
   return (
     <View style={styles.card}>
         <View style={styles.content}>
@@ -22,8 +24,9 @@ export const StateCard: React.FC<CardProps> = ({ imageUrl, emotion, description,
             </View>
       </View>
       <View style={styles.flags}>
-        <Flags flags='Nostalgico'></Flags>
-        <Flags flags='Felicidad'></Flags>
+        {flags.map((flag, index) => (
+          <Flags key={index} flags={flag} />
+        ))}
       </View>
     </View>
   );
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderRadius: 10,
+    borderRadius: 30,
     backgroundColor: '#E2C9FC',
     elevation: 3,
     margin: 10,
@@ -49,12 +52,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 image: {
-    borderWidth: 20,
-    borderColor: '#fff',
-    borderRadius: 100,
-    width: 200,
-    height: 200,
-    backgroundColor: 'blue',
+    width: 150,
+    height: 150
 },
   emotion: {
     fontSize: 30,
@@ -82,7 +81,6 @@ image: {
     gap: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
     borderRadius: 20,
     width: 150,
 },
