@@ -12,16 +12,25 @@ interface CardProps {
   flags: Array<string>;
 }
 
-export const StateCard: React.FC<CardProps> = ({ color, imageUrl, emotion, description, date, flags}) => {
+export const StateCard: React.FC<CardProps> = ({ color, imageUrl, emotion, description, date, flags }) => {
   return (
-    <View style={styles.card}>
-        <View style={styles.content}>
+    <View style={{
+      backgroundColor: color,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      borderRadius: 19.2, 
+      elevation: 3,
+      margin: 6.4, 
+      overflow: 'hidden',
+      maxWidth: 400,
+    }}>
+      <View style={styles.content}>
         <Image source={{ uri: imageUrl }} style={styles.image} />
-            <View style={styles.cardDescripcion}>
-            <Text style={styles.emotion}>{emotion}</Text>
-            <Text style={styles.description}>{description}</Text>
-            <Text style={styles.date}>{date}</Text>
-            </View>
+        <View style={styles.cardDescripcion}>
+          <Text style={styles.emotion}>{emotion}</Text>
+          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.date}>{date}</Text>
+        </View>
       </View>
       <View style={styles.flags}>
         {flags.map((flag, index) => (
@@ -33,57 +42,46 @@ export const StateCard: React.FC<CardProps> = ({ color, imageUrl, emotion, descr
 };
 
 const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderRadius: 30,
-    backgroundColor: '#E2C9FC',
-    elevation: 3,
-    margin: 10,
-    overflow: 'hidden',
-    maxWidth: 700,
-  },
-  content:{
-    padding: 10,
-    fontSize: 14,
-    flexDirection: 'row',
-    gap: 50,
+
+  content: {
+    padding: 6.4,
+    fontSize: 8.96, 
+    gap: 32, 
     justifyContent: 'center',
     alignItems: 'center',
   },
-image: {
-    width: 150,
-    height: 150
-},
+  image: {
+    width: 96, 
+    height: 96,
+  },
   emotion: {
-    fontSize: 30,
+    fontSize: 19.2, // 20% menos de 24
     fontWeight: 'bold',
   },
-  description: { 
-        fontSize: 20,
-        color: '#000',
-    },
+  description: {
+    fontSize: 12.8, // 20% menos de 16
+    color: '#000',
+  },
   date: {
-    fontSize: 20,
+    fontSize: 12.8, // 20% menos de 16
     color: '#000',
     fontWeight: 'bold'
   },
-    cardDescripcion: {
-        flexDirection: 'column',
-        gap: 10,
-        padding: 10,
-        width: 200,
-    },
+  cardDescripcion: {
+    flexDirection: 'column',
+    gap: 6.4, // 20% menos de 8
+    padding: 6.4, // 20% menos de 8
+    width: 128, // 20% menos de 160
+  },
   flags: {
-    margin: 10,
-    padding: 10,
-    fontSize: 14,
-    gap: 20,
+    margin: 6.4, // 20% menos de 8// 20% menos de 8
+    fontSize: 8.96, // 20% menos de 11.2
+    gap: 12.8, // 20% menos de 16
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-    width: 150,
-},
+    borderRadius: 12.8, // 20% menos de 16
+    width: 96, // 20% menos de 120
+  },
 });
 
 

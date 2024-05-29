@@ -15,8 +15,7 @@ export default function Flags({ flags }: { flags: string }) {
 const styles = StyleSheet.create({
     flagsContainer:{
         backgroundColor: '#fff',
-        fontSize: 20,
-        padding: 10,
+        padding: 8,
         borderRadius: 25,
         width: '100%',
         alignItems: 'center',
@@ -24,5 +23,6 @@ const styles = StyleSheet.create({
     },
     flags:{
         fontWeight: 'bold',
+        fontSize: 10
     }
 });

@@ -17,7 +17,6 @@ export default function Emotions() {
     require('../../assets/images/facehappy.png'),
     require('../../assets/images/enojado.png'),
     require('../../assets/images/triste.png'),
-    // Agrega aquí las rutas de tus imágenes adicionales
   ];
 
   const navigateToTabs = () => {
