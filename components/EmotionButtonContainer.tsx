@@ -1,16 +1,9 @@
-// EmotionButtonContainer.tsx
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { styles } from '@/constants/styles';
+import { styles } from '@/styles/emotionsStyles';
+import { EmotionButtonContainerProps } from '@/types/EmotionButtonTypes';
 
-type EmotionButton = 'Feliz' | 'Emocionado' | 'Vigoroso' | 'Alegre' | 'Ambicioso' | 'Triste';
-
-interface EmotionButtonContainerProps {
-  emotionButtons: EmotionButton[][];
-}
-
-const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotionButtons }) => {
+export function EmotionButtonContainer ({ emotionButtons }: EmotionButtonContainerProps) {
   return (
     <View style={styles.emotionButtonContainer}>
       {emotionButtons.map((row, rowIndex) => (
@@ -26,4 +19,3 @@ const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotion
   );
 };
 
-export default EmotionButtonContainer;

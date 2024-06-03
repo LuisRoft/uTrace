@@ -1,9 +1,6 @@
-import { View, StyleSheet, TextInput } from "react-native";
-
-
-export type InputFormProps = {
-  placeholder: string;
-};
+import { InputFormProps } from "@/types/InputFormTypes";
+import { TextInput } from "react-native";
+import { styles } from "@/styles/inputFormStyles";
 
 export function InputForm({ placeholder} : InputFormProps) {
   return (
@@ -16,16 +13,3 @@ export function InputForm({ placeholder} : InputFormProps) {
     />
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    width: '100%',
-    fontSize: 16,
-    color: '#333333',  
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 10,
-    padding: 8,  
-    marginBottom: 30,
-  },
-});

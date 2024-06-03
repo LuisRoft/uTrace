@@ -1,21 +1,18 @@
-// src/_layout.tsx
-import React from 'react';
 import { Image } from 'react-native';
 import { Tabs } from 'expo-router';
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { TabBarIcon } from '@/components/Navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { tabBarStyles } from '@/constants/tabBarStyles';
+import { styles } from '@/styles/tabBarStyles';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarStyle: tabBarStyles.tabBar,
+        tabBarStyle: styles.tabBar,
       }}
     >
       <Tabs.Screen
@@ -42,7 +39,7 @@ export default function TabLayout() {
           title : '',
           tabBarIcon: ({}) => (
             <Image
-              source={require('../../assets/images/icon.png')} // Ajusta la ruta según la ubicación de tu icono PNG
+              source={require('@/assets/images/icon.png')} // Ajusta la ruta según la ubicación de tu icono PNG
               style={{ width: 40, height: 40,  marginBottom: 10 }} // Ajusta el tamaño del icono aquí
             />
           ),

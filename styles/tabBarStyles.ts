@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const tabBarStyles = StyleSheet.create({
+export const styles = StyleSheet.create({
   tabBar: {
     backgroundColor: 'transparent',
     position: 'absolute',

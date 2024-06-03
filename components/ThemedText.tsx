@@ -1,15 +1,9 @@
-import { Text, type TextProps, StyleSheet } from 'react-native';
-
+import { Text } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
+import { ThemedTextProps } from '@/types/ThemedTextTypes';
+import { styles } from '@/styles/themedTextStyles';
 
 const fontFamily = 'Blinker-Regular';
-
-export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'superTitle';
-};
-
 
 export function ThemedText({
   style,
@@ -36,35 +30,3 @@ export function ThemedText({
     />
   );
 }
-
-const styles = StyleSheet.create({
-  default: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
-  },
-  superTitle: {
-    fontSize: 60,
-    fontWeight: 900,
-    lineHeight: 80,
-    fontFamily: 'Blinker-Bold',
-  },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    lineHeight: 30,
-    fontSize: 16,
-    color: '#0a7ea4',
-  },
-});

@@ -1,32 +1,16 @@
-import React from 'react';
-import { TouchableOpacity, StyleSheet, Text, TouchableOpacityProps } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { ThemedText } from './ThemedText';
+import { ButtonFormProps } from '@/types/ButtonFormTypes';
+import { styles } from '@/styles/buttonFormStyles';
 
-export type ButtonFormProps = TouchableOpacityProps & {
-    text: string;
-};
-export function ButtonForm({ text, ...rest }: ButtonFormProps) {
+
+
+export function ButtonForm({ text, style, ...rest}: ButtonFormProps) {
   return (
-    <TouchableOpacity style={styles.button} {...rest}>
+    <TouchableOpacity style={[styles.button, style]} {...rest}>
       <ThemedText style={styles.buttonText}>{text}</ThemedText>
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  button: {
-    borderColor: '#000',
-    borderRadius: 20,
-    paddingVertical: 13,
-    paddingHorizontal: 32,
-    borderWidth: 1,
-    marginTop: 20,
-    marginBottom: 40,
-  },
-  buttonText: {
-    color: '#000',
-    fontFamily: 'Blinker-Bold',
-    fontSize: 19,
-    textAlign: 'center',
-  },
-});
+

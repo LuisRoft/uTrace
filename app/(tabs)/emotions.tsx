@@ -3,25 +3,24 @@ import { Image, TouchableOpacity, ScrollView, View, TextInput } from 'react-nati
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { router } from "expo-router";
-import { styles } from '@/constants/styles';
-import EmotionButtonContainer from '@/components/EmotionButtonContainer';
+import { styles } from '@/styles/emotionsStyles';
+import { EmotionButtonContainer } from '@/components/EmotionButtonContainer';
+import { EmotionButton } from '@/types/EmotionButtonTypes';
+import { Images } from '@/constants/Images';
 
-type EmotionButton = 'Feliz' | 'Emocionado' | 'Vigoroso' | 'Alegre' | 'Ambicioso' | 'Triste';
+const emotionButtons: EmotionButton[][] = [
+  ['Feliz', 'Emocionado', 'Vigoroso'],
+  ['Alegre', 'Ambicioso', 'Triste'],
+  ['Alegre', 'Triste', 'Emocionado'],
+];
+
+const images: number[] = [
+  Images.happy, Images.angry, Images.sad
+];
 
 export default function Emotions() {
   const [currentImage, setCurrentImage] = useState<number>(0);
   const [description, setDescription] = useState<string>('');
-
-  const images: number[] = [
-    require('../../assets/images/facehappy.png'),
-    require('../../assets/images/enojado.png'),
-    require('../../assets/images/triste.png'),
-  ];
-
-  const navigateToTabs = () => {
-    router.push('(tabs)');
-  };
 
   const goToPreviousImage = () => {
     setCurrentImage(prevIndex => Math.max(0, prevIndex - 1));
@@ -30,12 +29,6 @@ export default function Emotions() {
   const goToNextImage = () => {
     setCurrentImage(prevIndex => Math.min(images.length - 1, prevIndex + 1));
   };
-
-  const emotionButtons: EmotionButton[][] = [
-    ['Feliz', 'Emocionado', 'Vigoroso'],
-    ['Alegre', 'Ambicioso', 'Triste'],
-    ['Alegre', 'Triste', 'Emocionado'],
-  ];
 
   return (
     <ThemedView style={styles.container} darkColor="#FFF">
