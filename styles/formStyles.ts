@@ -13,5 +13,10 @@ export const styles = StyleSheet.create({
 
     formButton: {
       marginTop: 30,
-    }
+    },
+
+    error: {
+      color: 'red',
+      fontSize: 14,
+    },
   });
