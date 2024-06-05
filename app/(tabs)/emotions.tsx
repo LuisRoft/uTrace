@@ -7,7 +7,9 @@ import { styles } from '@/styles/emotionsStyles';
 import { EmotionButtonContainer } from '@/components/EmotionButtonContainer';
 import { EmotionButton } from '@/types/EmotionButtonTypes';
 import { Images } from '@/constants/Images';
-
+import CaraFeliz from '@/components/icons/caraFeliz';
+import CaraTriste from '@/components/icons/caraTriste';
+import CaraEnojado from '@/components/icons/caraEnojado';
 
 const emotionButtons: EmotionButton[][] = [
   ['Feliz', 'Emocionado', 'Vigoroso'],
