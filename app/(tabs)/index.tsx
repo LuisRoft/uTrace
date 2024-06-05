@@ -1,24 +1,92 @@
 import { StateCard } from '@/components/StateCard/StateCard';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { styles } from '@/styles/homeStyles';
 import { Images } from '@/constants/Images';
 
 const listCards = [
   {
-    color: '#FE814B',
-    imageUrl: Images.angry,
-    emotion: "Reunión",
-    description: "Reunión para desarrollar la aplicación (Sale mal)",
-    date: "28 de Mayo 2024",
-    flags: ["Impotente", "Estresado"]
+    color: '#FEEBC1',
+    colorFlag: '#FECD5D',
+    textColor: '#000',
+    date: "29 DE MAYO",
+    hour: "10:00 AM",
+    imageUrl: Images.happy,
+    emotion: "FELIZ",
+    flags: ["Agradable", "Reconfortante", "Divertido", "Inspirador", "Motivado"],
+    activities: [
+      {
+        activity: "Salida con Luis",
+        cost: 5
+      },
+      {
+        activity: "Salida con Byron",
+        cost: 5
+      },
+      {
+        activity: "Salida con Stiven",
+        cost: 5
+      },
+      {
+        activity: "Salida con Jose",
+        cost: 5
+      },
+      {
+        activity: "Salida con Zea",
+        cost: 5
+      },
+      {
+        activity: "Salida con Caro",
+        cost: 5
+      },
+    ],
   },
   {
-    color: '#8DAEEB',
+    color: '#8CBEF9',
+    colorFlag: '#4B72FE',
+    textColor: '#FFF',
+    date: "29 DE MAYO",
+    hour: "10:00 AM",
     imageUrl: Images.sad,
-    emotion: "Ver mis notas",
-    description: "Me saque cero en todo por vagoneta",
-    date: "28 de Mayo 2024",
-    flags: ["Resentido", "Impotente", "Inconforme"]
+    emotion: "TRISTE",
+    flags: ["Resentido", "Desagradable", "Incomodo", "Desmotivado"],
+    activities: [
+      {
+        activity: "Encebollado",
+        cost: 2
+      },
+      {
+        activity: "Salida con Luis",
+        cost: 5
+      },
+      {
+        activity: "Salida con Byron",
+        cost: 5
+      },
+    ],
+  },
+  {
+    color: '#B2FFBA',
+    colorFlag: '#48F400',
+    textColor: '#000',
+    date: "29 DE MAYO",
+    hour: "10:00 AM",
+    imageUrl: Images.disgust,
+    emotion: "ASQUEADO",
+    flags: ["Resentido", "Desagradable", "Incomodo", "Desmotivado"],
+    activities: [
+      {
+        activity: "Encebollado",
+        cost: 2
+      },
+      {
+        activity: "Salida con Luis",
+        cost: 5
+      },
+      {
+        activity: "Salida con Byron",
+        cost: 5
+      },
+    ],
   },
 ];
 
@@ -34,12 +102,15 @@ export default function Home() {
           <Image source={Images.settings} style={styles.settingsIcon} />
         </View>
       </View>
-      <Text style={styles.textHome}>Registro de hoy</Text>
-      <View style={styles.cardContent}>
-        {listCards.map((card, index) => (
-          <StateCard key={index} color={card.color} imageUrl={card.imageUrl} emotion={card.emotion} description={card.description} date={card.date} flags={card.flags} />
-        ))}
-      </View>
+      <Text style={styles.textHome}>Registros de hoy</Text>
+      <Text style={styles.textHome}> </Text>
+      <ScrollView>
+        <View style={styles.cardContent}>
+          {listCards.map((card, index) => (
+            <StateCard key={index} color={card.color} colorFlag={card.colorFlag} textColor={card.textColor} emotion={card.emotion} date={card.date} hour={card.hour} imageUrl={card.imageUrl} flags={card.flags} activities={card.activities} />
+          ))}
+        </View>
+      </ScrollView>
     </View>
   )
 }

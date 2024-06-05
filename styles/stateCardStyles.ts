@@ -1,54 +1,75 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create ({
+export const styles = StyleSheet.create({
+  container: {
+    height: 150,
+    width: '100%',
+    borderRadius: 20,
+    margin: 4,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
 
-    container: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      borderRadius: 19.2, 
-      elevation: 3,
-      margin: 6.4, 
-      overflow: 'hidden',
-      maxWidth: 400,
-    },
-  
-    content: {
-      padding: 6.4,
-      fontSize: 8.96, 
-      gap: 32, 
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    image: {
-      width: 96, 
-      height: 96,
-    },
-    emotion: {
-      fontSize: 19.2, // 20% menos de 24
-      fontWeight: 'bold',
-    },
-    description: {
-      fontSize: 12.8, // 20% menos de 16
-      color: '#000',
-    },
-    date: {
-      fontSize: 12.8, // 20% menos de 16
-      color: '#000',
-      fontWeight: 'bold'
-    },
-    cardDescription: {
-      flexDirection: 'column',
-      gap: 6.4, // 20% menos de 8
-      padding: 6.4, // 20% menos de 8
-      width: 128, // 20% menos de 160
-    },
-    flags: {
-      margin: 6.4, // 20% menos de 8// 20% menos de 8
-      fontSize: 8.96, // 20% menos de 11.2
-      gap: 12.8, // 20% menos de 16
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: 12.8, // 20% menos de 16
-      width: 96, // 20% menos de 120
-    },
-  });
+  leftCont: {
+    width: "25%",
+    padding: 12,
+  },
+
+  icon: {
+    width: 65,
+    height: 65,
+  },
+
+  centerCont: {
+    paddingHorizontal: 10,
+    paddingTop: 25,
+    paddingBottom: 15,
+    display: 'flex',
+    flexDirection: 'column',
+    width: "50%",
+    height: "100%",
+  },
+
+  date: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: "space-between"
+  },
+
+  grid: {
+    paddingTop: 5,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+
+  rightCont: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: "space-between",
+    backgroundColor: '#fff',
+    borderRadius: 5,
+    width: "25%",
+    height: "50%",
+    margin: 12,
+  },
+
+  activities: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    gap: 5,
+  },
+
+  costs: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+  }
+});
