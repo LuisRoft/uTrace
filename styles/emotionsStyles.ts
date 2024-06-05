@@ -68,6 +68,6 @@ export const styles = StyleSheet.create({
     paddingHorizontal : 50,
     marginTop: 10, // Separación entre el título "Descripción" y el campo de entrada
     height: 100, // Altura para el campo de entrada multiline
-    textAlignVertical: 'top', // Alinear el texto en la parte superior del campo
+    verticalAlign: 'top', // Alinear el texto en la parte superior del campo
   },
 });
