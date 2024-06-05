@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, TouchableOpacity, ScrollView, View, TextInput } from 'react-native';
+import { Image, TouchableOpacity, ScrollView, View, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform  } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,6 +7,7 @@ import { styles } from '@/styles/emotionsStyles';
 import { EmotionButtonContainer } from '@/components/EmotionButtonContainer';
 import { EmotionButton } from '@/types/EmotionButtonTypes';
 import { Images } from '@/constants/Images';
+
 
 const emotionButtons: EmotionButton[][] = [
   ['Feliz', 'Emocionado', 'Vigoroso'],
@@ -31,37 +32,45 @@ export default function Emotions() {
   };
 
   return (
-    <ThemedView style={styles.container} darkColor="#FFF">
-      <View style={styles.content}>
-        <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
-          Hoy
-        </ThemedText>
-        <TouchableOpacity onPress={() => {}}>
-          <Image source={images[currentImage]} style={styles.image} />
-        </TouchableOpacity>
-        <View style={styles.iconsContainer}>
-          <TouchableOpacity onPress={goToPreviousImage}>
-            <Icon name="arrow-left" size={30} color="#000" />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={goToNextImage}>
-            <Icon name="arrow-right" size={30} color="#000" />
-          </TouchableOpacity>
-        </View>
-        <ScrollView contentContainerStyle={styles.iconsContainer}>
-          <EmotionButtonContainer emotionButtons={emotionButtons} />
-        </ScrollView>
-        <View style={styles.descriptionContainer}>
-          <ThemedText>Descripción</ThemedText>
-          <TextInput
-            style={styles.textInput}
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Escribe tu descripción aquí..."
-            placeholderTextColor="#888"
-            multiline
-          />
-        </View>
-      </View>
-    </ThemedView>
+    <KeyboardAvoidingView 
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={styles.constainerKeyBoard}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ThemedView style={styles.container} darkColor="#FFF">
+          <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+            <View style={styles.content}>
+              <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
+                Hoy
+              </ThemedText>
+              <TouchableOpacity onPress={() => {}}>
+                <Image source={images[currentImage]} style={styles.image} />
+              </TouchableOpacity>
+              <View style={styles.iconsContainer}>
+                <TouchableOpacity onPress={goToPreviousImage}>
+                  <Icon name="arrow-left" size={30} color="#000" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={goToNextImage}>
+                  <Icon name="arrow-right" size={30} color="#000" />
+                </TouchableOpacity>
+              </View>
+                <EmotionButtonContainer emotionButtons={emotionButtons} />
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <View style={styles.descriptionContainer}>
+                    <ThemedText>Descripción</ThemedText>
+                      <TextInput
+                        style={styles.textInput}
+                        value={description}
+                        onChangeText={setDescription}
+                        placeholder="Escribe tu descripción aquí..."
+                        placeholderTextColor="#888"
+                        multiline
+                      />
+                  </View>
+                </TouchableWithoutFeedback>
+            </View>
+          </ScrollView>
+        </ThemedView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }

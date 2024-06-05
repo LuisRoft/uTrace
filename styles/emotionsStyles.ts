@@ -9,6 +9,13 @@ export const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: '#F9F4E2', 
   },
+  constainerKeyBoard :{
+    flex: 1,
+  },
+  inner: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
   content: {
     alignItems: 'center',
   },
@@ -60,6 +67,10 @@ export const styles = StyleSheet.create({
     borderRadius: 15,
     width: '100%', // Asegurar que el contenedor use todo el ancho posible
     marginBottom: 100, // Añadir margen inferior para separación
+  },
+  scrollContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
   textInput: {
     backgroundColor: '#FFF',
