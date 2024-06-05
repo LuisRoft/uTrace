@@ -1,16 +1,17 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    flagsContainer:{
-        backgroundColor: '#fff',
-        padding: 8,
-        borderRadius: 25,
-        width: '100%',
+    flagsContainer: {
+        width: '48%',
+        marginVertical: 3,
+        padding: 5,
+        backgroundColor: '#f9c2ff',
+        borderRadius: 10,
         alignItems: 'center',
-        
+        justifyContent: 'center',
     },
-    flags:{
+    flags: {
         fontWeight: 'bold',
-        fontSize: 10
+        fontSize: 8
     }
 });

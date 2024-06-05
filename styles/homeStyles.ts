@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
       fontSize: 15,
     },
     header: {
+      marginTop: 20,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
