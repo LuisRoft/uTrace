@@ -1,30 +1,15 @@
-import { View, StyleSheet, TextInput } from "react-native";
+import { InputFormProps } from "@/types/InputFormTypes";
+import { TextInput } from "react-native";
+import { styles } from "@/styles/inputFormStyles";
 
-
-export type InputFormProps = {
-  placeholder: string;
-};
-
-export function InputForm({ placeholder} : InputFormProps) {
+export function InputForm({style,...rest} : InputFormProps) {
   return (
     <TextInput
-      style={styles.input}
-      placeholder= {placeholder}
+      style={[styles.input, style]}
       underlineColorAndroid="transparent"
       placeholderTextColor="#999999"
+      {...rest}
       
     />
   );
 }
-
-const styles = StyleSheet.create({
-  input: {
-    width: '100%',
-    fontSize: 16,
-    color: '#333333',  
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 10,
-    padding: 8,  
-  },
-});
