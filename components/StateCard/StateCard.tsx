@@ -24,7 +24,7 @@ export function StateCard({ color, colorFlag, textColor, emotion, date, hour, im
           <Text style={{ fontSize: 12, color: textColor }}>{hour}</Text>
         </View>
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.grid}>
             {flags.map((flag, index) => (
               <Flags key={index} flags={flag} flagColor={colorFlag} textColor={textColor} />
@@ -35,7 +35,7 @@ export function StateCard({ color, colorFlag, textColor, emotion, date, hour, im
       </View>
 
       <View style={styles.rightCont}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.activities}>
             {
               activities.map((activity, index) => (
