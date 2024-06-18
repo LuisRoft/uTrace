@@ -104,7 +104,7 @@ export default function Home() {
       </View>
       <Text style={styles.textHome}>Registros de hoy</Text>
       <Text style={styles.textHome}> </Text>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.cardContent}>
           {listCards.map((card, index) => (
             <StateCard key={index} color={card.color} colorFlag={card.colorFlag} textColor={card.textColor} emotion={card.emotion} date={card.date} hour={card.hour} imageUrl={card.imageUrl} flags={card.flags} activities={card.activities} />
