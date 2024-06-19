@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { styles } from '@/styles/homeStyles';
 import StateCards from '@/components/StateCard/StateCard';
-import { ref, get, child } from 'firebase/database'; // Importar funciones de Realtime Database
-import { FIREBASE_DB } from '@/FirebaseConfig'; // Importa tu configuración de Firebase
-import { emotions } from '@/components/Emotions'; // Importar las emociones
+import { ref, get, child } from 'firebase/database'; 
+import { FIREBASE_DB } from '@/FirebaseConfig'; 
+import { emotions } from '@/components/Emotions'; 
 
 const Home: React.FC = () => {
   const [userSelections, setUserSelections] = useState<any[]>([]); // Estado para almacenar las selecciones de usuario
@@ -25,8 +25,8 @@ const Home: React.FC = () => {
       }
     };
 
-    fetchUserSelections(); // Llamada a la función para obtener los datos al cargar el componente
-  }, []); // El segundo argumento [] asegura que se ejecute solo una vez al montar el componente
+    fetchUserSelections(); 
+  }, []); 
 
   return (
     <View style={styles.containerHome}>

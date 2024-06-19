@@ -1,4 +1,3 @@
-// Emotions.tsx
 import React, { useState } from 'react';
 import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
@@ -39,7 +38,7 @@ const Emotions: React.FC = () => {
 
   const handleSave = async () => {
     const data = {
-      selectedEmotion: currentEmotion, // Guardar el índice de la emoción seleccionada
+      selectedEmotion: currentEmotion,
       selectedEmotionButtons,
       selectedActivityButtons,
       date: new Date().toISOString()

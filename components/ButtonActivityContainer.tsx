@@ -1,4 +1,3 @@
-// ActivityButtonContainer.tsx
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
