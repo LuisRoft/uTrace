@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, ScrollView, View, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native';
+import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '@/styles/emotionsStyles';
 import EmotionButtonContainer from '@/components/EmotionButtonContainer';
+import ActivityButtonContainer from '@/components/ButtonActivityContainer';
 import { emotions } from '@/components/Emotions';
+import activities from '@/constants/activities'; // Importar las actividades desde el archivo
 
 const Emotions: React.FC = () => {
   const [currentEmotion, setCurrentEmotion] = useState<number>(0);
-  const [description, setDescription] = useState<string>('');
 
   const goToPreviousEmotion = () => {
     setCurrentEmotion(prevIndex => Math.max(0, prevIndex - 1));
@@ -26,42 +27,28 @@ const Emotions: React.FC = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.constainerKeyBoard}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <ThemedView style={[styles.container, {backgroundColor}]}>
-          <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-            <View style={styles.content}>
-              <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
-                Hoy
-              </ThemedText>
-              <TouchableOpacity onPress={() => {}}>
-                <EmotionImage style={styles.image} />
+          <View style={styles.content}>
+            <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
+              Hoy
+            </ThemedText>
+            <TouchableOpacity onPress={() => {}}>
+              <EmotionImage style={styles.image} />
+            </TouchableOpacity>
+            <View style={styles.iconsContainer}>
+              <TouchableOpacity onPress={goToPreviousEmotion}>
+                <Icon name="arrow-left" size={30} color="#000" />
               </TouchableOpacity>
-              <View style={styles.iconsContainer}>
-                <TouchableOpacity onPress={goToPreviousEmotion}>
-                  <Icon name="arrow-left" size={30} color="#000" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={goToNextEmotion}>
-                  <Icon name="arrow-right" size={30} color="#000" />
-                </TouchableOpacity>
-              </View>
-              <EmotionButtonContainer emotionButtons={buttons} containerBackgroundColor={containerBackgroundColor} />
-              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <View style={[styles.descriptionContainer, { backgroundColor: containerBackgroundColor }]}>
-                  <ThemedText>Descripción</ThemedText>
-                  <TextInput
-                    style={styles.textInput}
-                    value={description}
-                    onChangeText={setDescription}
-                    placeholder="Escribe tu descripción aquí..."
-                    placeholderTextColor="#888"
-                    multiline
-                  />
-                </View>
-              </TouchableWithoutFeedback>
+              <TouchableOpacity onPress={goToNextEmotion}>
+                <Icon name="arrow-right" size={30} color="#000" />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
+            <EmotionButtonContainer emotionButtons={buttons} containerBackgroundColor={containerBackgroundColor} />
+            <ActivityButtonContainer activityButtons={activities} containerBackgroundColor={containerBackgroundColor} />
+          </View>
         </ThemedView>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };

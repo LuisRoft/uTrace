@@ -31,6 +31,8 @@ export default function RootLayout() {
         <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name="AddEmotion" options={{ title: 'Agregar Emoción' }} />
+        <Stack.Screen name="AddActivity" options={{ title: 'Agregar Actividad' }} />
       </Stack>
     </ThemeProvider>
   );
