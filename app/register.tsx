@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/FirebaseConfig";
 import { ref, set } from 'firebase/database'
 import { styles } from "@/styles/formStyles";
-import { Alert, KeyboardAvoidingView, View } from "react-native";
+import { Alert, KeyboardAvoidingView, ScrollViewBase, View, ScrollView } from "react-native";
 import { InputForm } from "@/components/InputForm";
 import { ButtonForm } from "@/components/ButtonForm";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -79,20 +79,22 @@ export default function Register() {
 
   return (
     <ThemedView style={{alignItems:"center", justifyContent:"center"}} darkColor="#FFF" >
-      <ThemedText type="superTitle" darkColor="#000" style={{fontFamily: 'Blinker-Bold', alignSelf:"baseline"} }>Registrate!</ThemedText>
-      <View style={[styles.form, {marginBottom:30}]}>
-        <ThemedText style={styles.subtitle}type="subtitle" darkColor="#000">Crea tu cuenta</ThemedText>
-        <KeyboardAvoidingView behavior="padding" style={{width:"100%"}}>
-          <InputForm placeholder="Nombre" value={name} onChangeText={setName} style={{marginBottom:30}}/>
-          <InputForm placeholder="Apellido" value={surname} onChangeText={setSurname} style={{marginBottom:30}}/>
-          <InputForm placeholder="Correo" value={email} onChangeText={setEmail}/>
-          {emailError ? <ThemedText style={styles.error}>{emailError}</ThemedText> : null}
-          <InputForm placeholder="Contraseña" value={password} onChangeText={setPassword} secureTextEntry={true} style={{marginTop:30}}/>
-          {passwordError ? <ThemedText style={styles.error}>{passwordError}</ThemedText> : null}
-        </KeyboardAvoidingView>
-        {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-        <ButtonForm text="Registrate" style={styles.formButton} onPress={handleRegister} />        
-      </View>
+      <ScrollView style={{width:"100%"}}>
+        <ThemedText type="superTitle" darkColor="#000" style={{fontFamily: 'Blinker-Bold', alignSelf:"baseline"} }>Registrate!</ThemedText>
+        <View style={[styles.form, {marginBottom:30}]}>
+          <ThemedText style={styles.subtitle}type="subtitle" darkColor="#000">Crea tu cuenta</ThemedText>
+          <KeyboardAvoidingView behavior="padding" style={{width:"100%"}}>
+            <InputForm placeholder="Nombre" value={name} onChangeText={setName} style={{marginBottom:30}}/>
+            <InputForm placeholder="Apellido" value={surname} onChangeText={setSurname} style={{marginBottom:30}}/>
+            <InputForm placeholder="Correo" value={email} onChangeText={setEmail}/>
+            {emailError ? <ThemedText style={styles.error}>{emailError}</ThemedText> : null}
+            <InputForm placeholder="Contraseña" value={password} onChangeText={setPassword} secureTextEntry={true} style={{marginTop:30}}/>
+            {passwordError ? <ThemedText style={styles.error}>{passwordError}</ThemedText> : null}
+          </KeyboardAvoidingView>
+          {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
+          <ButtonForm text="Registrate" style={styles.formButton} onPress={handleRegister} />        
+        </View>
+      </ScrollView>
     </ThemedView>
   );
 }
