@@ -1,9 +1,14 @@
 import React from 'react';
 import Svg, { Path, LinearGradient, Stop } from 'react-native-svg';
 
-export default function CaraAsco () {
+interface CaraAscoProps {
+  width?: number;
+  height?: number;
+}
+
+export default function CaraAsco({ width = 210, height = 297 }: CaraAscoProps) {
   return (
-    <Svg width={210} height={297} viewBox="0 0 210 297">
+    <Svg width={width} height={height} viewBox="0 0 210 297">
       <LinearGradient
         id="linearGradient3"
         x1="296.30008"
@@ -66,6 +71,3 @@ export default function CaraAsco () {
      </Svg>
    );
  };
- 
-
- 

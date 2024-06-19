@@ -18,7 +18,7 @@ export const emotions: Emotions[] = [
         buttons: [
             ["Orgulloso", "Feliz", "Provocativo"],
             ["Aceptado", "Inspirado", "Confiado"],
-            ["Poderoso", "Jugeton", "Valiente"],
+            ["Poderoso", "Jugueton", "Valiente"],
         ],
         backgroundColor: "#F9F4E2",
         containerBackgroundColor: "#FFCE5D"

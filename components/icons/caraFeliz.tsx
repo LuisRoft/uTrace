@@ -1,9 +1,15 @@
+// CaraFeliz.tsx
 import React from 'react';
 import Svg, { Path, G } from 'react-native-svg';
 
-export default function CaraFeliz() {
+interface CaraFelizProps {
+  width?: number;
+  height?: number;
+}
+
+export default function CaraFeliz({ width = 210, height = 297 }: CaraFelizProps) {
   return (
-    <Svg width={210} height={297} viewBox="0 0 210 297">
+    <Svg width={width} height={height} viewBox="0 0 210 297">
       <G id="layer1">
         <G
           id="g2-5-0"
@@ -51,5 +57,4 @@ export default function CaraFeliz() {
       </G>
     </Svg>
   );
-};
-
+}

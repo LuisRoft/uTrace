@@ -1,11 +1,20 @@
 import React from 'react';
 import Svg, { Path, G } from 'react-native-svg';
 
-export default function CaraTriste() {
+interface CaraTristeProps {
+  width?: number;
+  height?: number;
+}
+
+export default function CaraTriste({ width = 210, height = 297 }: CaraTristeProps) {
   return (
-    <Svg width={210} height={297} viewBox="0 0 210 297" id="svg1">
+    <Svg width={width} height={height} viewBox="0 0 210 297">
       <G id="layer1">
-        <G id="g3-1" transform="matrix(1.5525683,0,0,1.5525683,-354.82849,-198.15905)">
+        <G
+          id="g3-1"
+          transform="matrix(1.5525683,0,0,1.5525683,-354.82849,-198.15905)"
+          style={{ strokeWidth: 0.465, strokeDasharray: 'none' }}
+        >
           <Path
             fill="#4b72fe"
             fillOpacity={1}
@@ -39,5 +48,4 @@ export default function CaraTriste() {
       </G>
     </Svg>
   );
-};
-
+}

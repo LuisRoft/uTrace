@@ -1,7 +1,7 @@
 const activities = [
-    ["Correr", "Leer", "Cocinar"],
-    ["Correr", "Leer", "Cocinar"],
-    ["Correr", "Leer", "Cocinar"],
+    ["Correr", "Musica", "Bañarse"],
+    ["Jugar", "Volley", "Tareas"],
+    ["Dormir", "Viajar", "Compras"],
   ];
   
   export default activities;

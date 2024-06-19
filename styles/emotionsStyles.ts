@@ -176,10 +176,29 @@ export const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
   },
+  selectedButton: {
+    backgroundColor: '#cccccc', 
+  },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: 1,
+  },
+  saveButton: {
+    backgroundColor: '#FFD700',
+    padding: 10,
+    borderRadius: 15,
+    marginTop: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+  },
+  saveButtonText: {
+    color: '#FFFF',
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });

@@ -9,9 +9,11 @@ import { router } from 'expo-router';
 type ActivityButtonContainerProps = {
   activityButtons: string[][];
   containerBackgroundColor: string;
+  onButtonPress: (buttonLabel: string) => void;
+  selectedButtons: string[];
 };
 
-const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activityButtons, containerBackgroundColor }) => {
+const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activityButtons, containerBackgroundColor, onButtonPress, selectedButtons }) => {
   const onAddPress = () => {
     router.push('/AddActivity');
   };
@@ -25,7 +27,14 @@ const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activ
       {activityButtons.map((buttonRow, rowIndex) => (
         <View key={rowIndex} style={styles.buttonRow}>
           {buttonRow.map((buttonLabel, buttonIndex) => (
-            <TouchableOpacity key={buttonIndex} style={styles.button}>
+            <TouchableOpacity
+              key={buttonIndex}
+              style={[
+                styles.button,
+                selectedButtons.includes(buttonLabel) && styles.selectedButton
+              ]}
+              onPress={() => onButtonPress(buttonLabel)}
+            >
               <ThemedText style={styles.buttonText}>{buttonLabel}</ThemedText>
             </TouchableOpacity>
           ))}
