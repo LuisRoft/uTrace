@@ -1,7 +1,8 @@
 import { StateCard } from '@/components/StateCard/StateCard';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { styles } from '@/styles/homeStyles';
 import { Images } from '@/constants/Images';
+import { useAuth } from '@/hooks/useAuth';
 
 const listCards = [
   {
@@ -91,15 +92,25 @@ const listCards = [
 ];
 
 export default function Home() {
+  const {logout, user} = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+  }
+
+  console.log('user data: ', user);
+
   return (
     <View style={styles.containerHome}>
       <View style={styles.header}>
         <View style={styles.iconTextContainer}>
           <Image source={Images.happy} style={styles.icon} />
-          <Text style={styles.text}>Hola, Luis!</Text>
+          <Text style={styles.text}>Hola, {user?.username}!</Text>
         </View>
         <View>
-          <Image source={Images.settings} style={styles.settingsIcon} />
+          <TouchableOpacity onPress={handleLogout}>
+            <Image source={Images.settings} style={styles.settingsIcon} />
+          </TouchableOpacity>
         </View>
       </View>
       <Text style={styles.textHome}>Registros de hoy</Text>
