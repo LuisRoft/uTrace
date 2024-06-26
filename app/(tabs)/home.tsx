@@ -1,109 +1,43 @@
-import { StateCard } from '@/components/StateCard/StateCard';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { styles } from '@/styles/homeStyles';
+import StateCards from '@/components/StateCard/StateCard';
+import { ref, get, child } from 'firebase/database'; 
+import { FIREBASE_DB } from '@/FirebaseConfig'; 
 import { Images } from '@/constants/Images';
+import { emotions } from '@/components/Emotions'; 
 import { useAuth } from '@/hooks/useAuth';
 
-const listCards = [
-  {
-    color: '#FEEBC1',
-    colorFlag: '#FECD5D',
-    textColor: '#000',
-    date: "29 DE MAYO",
-    hour: "10:00 AM",
-    imageUrl: Images.happy,
-    emotion: "FELIZ",
-    flags: ["Agradable", "Reconfortante", "Divertido", "Inspirador", "Motivado"],
-    activities: [
-      {
-        activity: "Salida con Luis",
-        cost: 5
-      },
-      {
-        activity: "Salida con Byron",
-        cost: 5
-      },
-      {
-        activity: "Salida con Stiven",
-        cost: 5
-      },
-      {
-        activity: "Salida con Jose",
-        cost: 5
-      },
-      {
-        activity: "Salida con Zea",
-        cost: 5
-      },
-      {
-        activity: "Salida con Caro",
-        cost: 5
-      },
-    ],
-  },
-  {
-    color: '#8CBEF9',
-    colorFlag: '#4B72FE',
-    textColor: '#FFF',
-    date: "29 DE MAYO",
-    hour: "10:00 AM",
-    imageUrl: Images.sad,
-    emotion: "TRISTE",
-    flags: ["Resentido", "Desagradable", "Incomodo", "Desmotivado"],
-    activities: [
-      {
-        activity: "Encebollado",
-        cost: 2
-      },
-      {
-        activity: "Salida con Luis",
-        cost: 5
-      },
-      {
-        activity: "Salida con Byron",
-        cost: 5
-      },
-    ],
-  },
-  {
-    color: '#B2FFBA',
-    colorFlag: '#48F400',
-    textColor: '#000',
-    date: "29 DE MAYO",
-    hour: "10:00 AM",
-    imageUrl: Images.disgust,
-    emotion: "ASQUEADO",
-    flags: ["Resentido", "Desagradable", "Incomodo", "Desmotivado"],
-    activities: [
-      {
-        activity: "Encebollado",
-        cost: 2
-      },
-      {
-        activity: "Salida con Luis",
-        cost: 5
-      },
-      {
-        activity: "Salida con Byron",
-        cost: 5
-      },
-    ],
-  },
-];
-
 export default function Home() {
-  const {logout, user} = useAuth();
+  const [userSelections, setUserSelections] = useState<any[]>([]); 
+    const {logout, user} = useAuth();
 
   const handleLogout = async () => {
     await logout();
   }
 
-  console.log('user data: ', user);
+  useEffect(() => {
+    const fetchUserSelections = async () => {
+      try {
+        const snapshot = await get(child(ref(FIREBASE_DB), 'userSelections'));
+        if (snapshot.exists()) {
+          const selectionsArray = Object.values(snapshot.val());
+          setUserSelections(selectionsArray);
+        } else {
+          console.log('No data available');
+        }
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+
+    fetchUserSelections(); 
+  }, []); 
 
   return (
     <View style={styles.containerHome}>
       <View style={styles.header}>
-        <View style={styles.iconTextContainer}>
+      <View style={styles.iconTextContainer}>
           <Image source={Images.happy} style={styles.icon} />
           <Text style={styles.text}>Hola, {user?.username}!</Text>
         </View>
@@ -114,14 +48,30 @@ export default function Home() {
         </View>
       </View>
       <Text style={styles.textHome}>Registros de hoy</Text>
-      <Text style={styles.textHome}> </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.cardContent}>
-          {listCards.map((card, index) => (
-            <StateCard key={index} color={card.color} colorFlag={card.colorFlag} textColor={card.textColor} emotion={card.emotion} date={card.date} hour={card.hour} imageUrl={card.imageUrl} flags={card.flags} activities={card.activities} />
-          ))}
+          {userSelections.map((selection, index) => {
+            const emotionData = emotions[selection.selectedEmotion];
+            return (
+              <StateCards
+                key={index}
+                color={selection.backgroundColor} // Color dinámico, ajusta según tus datos
+                colorFlag={selection.flagColor} // Color de la bandera dinámico, ajusta según tus datos
+                textColor={selection.textColor} // Color del texto dinámico, ajusta según tus datos
+                date={selection.date} // Fecha dinámica, ajusta según tus datos
+                hour={selection.hour} // Hora dinámica, ajusta según tus datos
+                emotion={selection.selectedEmotionButtons.join(', ')} // Emoción seleccionada dinámica, ajusta según tus datos
+                flags={selection.selectedEmotionButtons} // Botones de emoción seleccionados
+                activities={selection.selectedActivityButtons.map((activity: string) => ({ activity, cost: 5 }))} // Actividades seleccionadas
+                EmotionComponent={emotionData.image} // Componente de emoción
+                emotionProps={{ width: 60, height: 100 }} // Propiedades del componente de emoción
+                backgroundColor={emotionData.backgroundColor} 
+                imageUrl={''}
+              />
+            );
+          })}
         </View>
       </ScrollView>
     </View>
-  )
-}
+  );
+};
