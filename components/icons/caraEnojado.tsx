@@ -1,11 +1,20 @@
 import React from 'react';
 import Svg, { Path, G } from 'react-native-svg';
 
-export default function CaraEnojado() {
+interface CaraEnojadoProps {
+  width?: number;
+  height?: number;
+}
+
+export default function CaraEnojado({ width = 210, height = 297 }: CaraEnojadoProps) {
   return (
-    <Svg width={210} height={297} viewBox="0 0 210 297" id="svg1">
+    <Svg width={width} height={height} viewBox="0 0 210 297">
       <G id="layer1">
-        <G id="g5-4" transform="matrix(1.5165318,0,0,1.5165318,-56.591677,-434.06813)">
+        <G
+          id="g5-4"
+          transform="matrix(1.5165318,0,0,1.5165318,-56.591677,-434.06813)"
+          style={{ strokeWidth: 0.465, strokeDasharray: 'none' }}
+        >
           <Path
             fill="#fe814b"
             fillOpacity={1}
@@ -59,5 +68,4 @@ export default function CaraEnojado() {
       </G>
     </Svg>
   );
-};
-
+}

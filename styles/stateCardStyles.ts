@@ -11,40 +11,30 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-
   leftCont: {
     width: "25%",
     padding: 12,
   },
-
-  icon: {
-    width: 65,
-    height: 65,
-  },
-
   centerCont: {
     paddingHorizontal: 10,
     paddingTop: 25,
     paddingBottom: 15,
     display: 'flex',
     flexDirection: 'column',
-    width: "50%",
+    width: "40%",
     height: "100%",
   },
-
   date: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: "space-between"
   },
-
   grid: {
-    paddingTop: 5,
+    paddingTop: 10,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-
   rightCont: {
     display: 'flex',
     flexDirection: 'column',
@@ -55,15 +45,13 @@ export const styles = StyleSheet.create({
     height: "50%",
     margin: 12,
   },
-
   activities: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
-    gap: 5,
+    gap: 10,
   },
-
   costs: {
     display: 'flex',
     flexDirection: 'row',

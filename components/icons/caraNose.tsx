@@ -1,9 +1,14 @@
 import React from 'react';
-import Svg, { Path, G } from 'react-native-svg';
+import Svg, { G, Path } from 'react-native-svg';
 
-export default function CaraNose() {
+interface CaraNoseProps {
+  width?: number;
+  height?: number;
+}
+
+export default function CaraNose({ width = 210, height = 297 }: CaraNoseProps) {
   return (
-    <Svg width={210} height={297} viewBox="0 0 210 297" id="svg1">
+    <Svg width={width} height={height} viewBox="0 0 210 297" id="svg1">
       <G id="layer1">
         <G id="g4-5" transform="matrix(1.5500558,0,0,1.5500558,-350.71999,34.398922)">
           <Path
@@ -42,6 +47,6 @@ export default function CaraNose() {
       </G>
     </Svg>
   );
-};
+}
 
 

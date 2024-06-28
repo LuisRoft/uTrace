@@ -16,52 +16,52 @@ export const emotions: Emotions[] = [
     {
         image: CaraFeliz,
         buttons: [
-            ["Muy feliz", "Feliz", "Contento"],
-            ["Muy feliz", "Feliz", "Contento"],
-            ["Muy feliz", "Feliz", "Contento"],
+            ["Orgulloso", "Feliz", "Provocativo"],
+            ["Aceptado", "Inspirado", "Confiado"],
+            ["Poderoso", "Jugueton", "Valiente"],
         ],
         backgroundColor: "#F9F4E2",
-        containerBackgroundColor: "#FFD700"
+        containerBackgroundColor: "#FFCE5D"
     },
     {
         image: CaraTriste,
         buttons: [
-            ["Muy triste", "Triste", "Deprimido"],
-            ["Muy triste", "Triste", "Deprimido"],
-            ["Muy triste", "Triste", "Deprimido"],
+            ["Ansioso", "Aburrido", "Abrumado"],
+            ["Vacio", "Desesperado", "Ignorado"],
+            ["Deprimido", "Anhelante", "Inferior"],
         ],
-        backgroundColor: '#D3D3D3',
-        containerBackgroundColor: '#FF6347'
+        backgroundColor: '#8DAEEB',
+        containerBackgroundColor: '#4B72FE'
     },
     {
         image: CaraEnojado,
         buttons: [
-            ["Muy enojado", "Enojado", "Irritado"],
-            ["Muy enojado", "Enojado", "Irritado"],
-            ["Muy enojado", "Enojado", "Irritado"],
+            ["Distante", "Enfadado", "Hostil"],
+            ["Odioso", "Agresivo", "Sospechoso"],
+            ["Amenazado", "Celoso", "Inseguro"],
         ],
-        backgroundColor: '#FF6347',
-        containerBackgroundColor: '#FF6347'
+        backgroundColor: '#f9ac8c',
+        containerBackgroundColor: '#FF7A5D'
     },
     {
         image: CaraMiedo,
         buttons: [
-            ["Muy asustado", "Asustado", "Nervioso"],
-            ["Muy asustado", "Asustado", "Nervioso"],
-            ["Muy asustado", "Asustado", "Nervioso"],
+            ["Herido", "Sumiso", "Ridiculizado"],
+            ["Humillado", "Inseguro", "Pobre"],
+            ["Rechazado", "Asustado", "Aterrado"],
         ],
-        backgroundColor: '#FF6347',
-        containerBackgroundColor: '#FF6347'
+        backgroundColor: '#E7C1FE',
+        containerBackgroundColor: '#8229b1'
     },
     {
         image: CaraAsco,
         buttons: [
-            ["Muy asqueado", "Asqueado", "Repulsión"],
-            ["Muy asqueado", "Asqueado", "Repulsión"],
-            ["Muy asqueado", "Asqueado", "Repulsión"],
+            ["Critico", "Terrible", "Sárcastico"],
+            ["Desaprobado", "Evasivo", "Esceptico"],
+            ["Decepcionado", "Culpable", "Repugnante"],
         ],
-        backgroundColor: '#FF6347',
-        containerBackgroundColor: '#FF6347'
+        backgroundColor: '#85E0A3',
+        containerBackgroundColor: '#00FF66'
     },
     {
         image: CaraNose,
@@ -70,7 +70,7 @@ export const emotions: Emotions[] = [
             ["Muy indiferente", "Indiferente", "Neutro"],
             ["Muy indiferente", "Indiferente", "Neutro"],
         ],
-        backgroundColor: '#FF6347',
-        containerBackgroundColor: '#FF6347'
+        backgroundColor: '#EAFAFF',
+        containerBackgroundColor: '#C3D7FF'
     },
 ];

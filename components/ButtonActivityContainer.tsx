@@ -2,28 +2,28 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { styles } from '@/styles/emotionsStyles';
-import ButtonAdd from './ButtonAdd';
+import ButtonAddActivity from './ButtonAddActivity';
 import { router } from 'expo-router';
 
-type EmotionButtonContainerProps = {
-  emotionButtons: string[][];
+type ActivityButtonContainerProps = {
+  activityButtons: string[][];
   containerBackgroundColor: string;
   onButtonPress: (buttonLabel: string) => void;
   selectedButtons: string[];
 };
 
-const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotionButtons, containerBackgroundColor, onButtonPress, selectedButtons }) => {
+const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activityButtons, containerBackgroundColor, onButtonPress, selectedButtons }) => {
   const onAddPress = () => {
-    router.push('/AddEmotion');
+    router.push('/AddActivity');
   };
 
   return (
-    <View style={[styles.emotionButtonContainer, { backgroundColor: containerBackgroundColor }]}>
+    <View style={[styles.activityButtonContainer, { backgroundColor: containerBackgroundColor }]}>
       <View style={styles.headerContainer}>
-        <ThemedText style={styles.containerText}>Sentimientos</ThemedText>
-        <ButtonAdd onPress={onAddPress} color={containerBackgroundColor} />
+        <ThemedText style={styles.containerTextActivity}>Actividades</ThemedText>
+        <ButtonAddActivity onPress={onAddPress} color={containerBackgroundColor} />
       </View>
-      {emotionButtons.map((buttonRow, rowIndex) => (
+      {activityButtons.map((buttonRow, rowIndex) => (
         <View key={rowIndex} style={styles.buttonRow}>
           {buttonRow.map((buttonLabel, buttonIndex) => (
             <TouchableOpacity
@@ -43,4 +43,4 @@ const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotion
   );
 };
 
-export default EmotionButtonContainer;
+export default ActivityButtonContainer;
