@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { styles } from '@/styles/homeStyles';
 import StateCards from '@/components/StateCard/StateCard';
 import { ref, get, child } from 'firebase/database'; 
 import { FIREBASE_DB } from '@/FirebaseConfig'; 
+import { Images } from '@/constants/Images';
 import { emotions } from '@/components/Emotions'; 
+import { useAuth } from '@/hooks/useAuth';
 
-const Home: React.FC = () => {
-  const [userSelections, setUserSelections] = useState<any[]>([]); // Estado para almacenar las selecciones de usuario
+export default function Home() {
+  const [userSelections, setUserSelections] = useState<any[]>([]); 
+    const {logout, user} = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+  }
 
   useEffect(() => {
-    // Función para obtener los datos de Firebase
     const fetchUserSelections = async () => {
       try {
         const snapshot = await get(child(ref(FIREBASE_DB), 'userSelections'));
@@ -31,8 +37,14 @@ const Home: React.FC = () => {
   return (
     <View style={styles.containerHome}>
       <View style={styles.header}>
-        <View style={styles.iconTextContainer}>
-          <Text style={styles.text}>Hola, Luis!</Text>
+      <View style={styles.iconTextContainer}>
+          <Image source={Images.happy} style={styles.icon} />
+          <Text style={styles.text}>Hola, {user?.username}!</Text>
+        </View>
+        <View>
+          <TouchableOpacity onPress={handleLogout}>
+            <Image source={Images.settings} style={styles.settingsIcon} />
+          </TouchableOpacity>
         </View>
       </View>
       <Text style={styles.textHome}>Registros de hoy</Text>
@@ -63,6 +75,3 @@ const Home: React.FC = () => {
     </View>
   );
 };
-
-export default Home;
-
