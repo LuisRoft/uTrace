@@ -1,12 +1,8 @@
 import React from 'react';
 import Svg, { Path, G } from 'react-native-svg';
+import { FaceProps } from '@/types/FacesType';
 
-interface CaraEnojadoProps {
-  width?: number;
-  height?: number;
-}
-
-export default function CaraEnojado({ width = 210, height = 297 }: CaraEnojadoProps) {
+export default function CaraEnojado({ width = 210, height = 297 }: FaceProps) {
   return (
     <Svg width={width} height={height} viewBox="0 0 210 297">
       <G id="layer1">

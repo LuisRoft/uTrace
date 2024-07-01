@@ -1,12 +1,8 @@
 import React from 'react';
 import Svg, { G, Path, Defs, LinearGradient, Stop } from 'react-native-svg';
+import { FaceProps } from '@/types/FacesType';
 
-interface CaraMiedoProps {
-  width?: number;
-  height?: number;
-}
-
-export default function CaraMiedo({ width = 210, height = 297 }: CaraMiedoProps) {
+export default function CaraMiedo({ width = 210, height = 297 }: FaceProps) {
   return (
     <Svg width={width} height={height} viewBox="0 0 210 297" id="svg1">
       <Defs>
