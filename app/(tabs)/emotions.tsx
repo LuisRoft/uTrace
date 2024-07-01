@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert, Dimensions } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,21 +7,35 @@ import { styles } from '@/styles/emotionsStyles';
 import EmotionButtonContainer from '@/components/EmotionButtonContainer';
 import ActivityButtonContainer from '@/components/ButtonActivityContainer';
 import { emotions } from '@/components/Emotions';
-import activities from '@/constants/activities'; 
-import { FIREBASE_DB } from '@/FirebaseConfig'; 
-import { ref, push } from 'firebase/database'; 
+import activities from '@/constants/activities';
+import { FIREBASE_DB } from '@/FirebaseConfig';
+import { ref, push } from 'firebase/database';
+import { useAuth } from '@/hooks/useAuth';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const Emotions: React.FC = () => {
   const [currentEmotion, setCurrentEmotion] = useState<number>(0);
   const [selectedEmotionButtons, setSelectedEmotionButtons] = useState<string[]>([]);
   const [selectedActivityButtons, setSelectedActivityButtons] = useState<string[]>([]);
+  const { user } = useAuth();
+  const translateX = useSharedValue(0);
 
   const goToPreviousEmotion = () => {
-    setCurrentEmotion(prevIndex => Math.max(0, prevIndex - 1));
+    translateX.value = withSpring(SCREEN_WIDTH);
+    setTimeout(() => {
+      setCurrentEmotion(prevIndex => (prevIndex === 0 ? emotions.length - 1 : prevIndex - 1));
+      translateX.value = withSpring(0);
+    }, 200);
   };
 
   const goToNextEmotion = () => {
-    setCurrentEmotion(prevIndex => Math.min(emotions.length - 1, prevIndex + 1));
+    translateX.value = withSpring(-SCREEN_WIDTH);
+    setTimeout(() => {
+      setCurrentEmotion(prevIndex => (prevIndex === emotions.length - 1 ? 0 : prevIndex + 1));
+      translateX.value = withSpring(0);
+    }, 200);
   };
 
   const handleEmotionButtonPress = (buttonLabel: string) => {
@@ -37,11 +51,15 @@ const Emotions: React.FC = () => {
   };
 
   const handleSave = async () => {
+    const currentEmotionData = emotions[currentEmotion];
     const data = {
+      userId: user?.userId,
       selectedEmotion: currentEmotion,
       selectedEmotionButtons,
       selectedActivityButtons,
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
+      backgroundColor: currentEmotionData.backgroundColor,
+      containerBackgroundColor: currentEmotionData.containerBackgroundColor,
     };
 
     try {
@@ -54,6 +72,11 @@ const Emotions: React.FC = () => {
   };
 
   const { image: EmotionImage, buttons, backgroundColor, containerBackgroundColor } = emotions[currentEmotion];
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }],
+    };
+  });
 
   return (
     <KeyboardAvoidingView
@@ -66,9 +89,11 @@ const Emotions: React.FC = () => {
             <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
               Hoy
             </ThemedText>
-            <TouchableOpacity onPress={() => { }}>
-              <EmotionImage style={styles.image} />
-            </TouchableOpacity>
+            <Animated.View style={[styles.animatedContainer, animatedStyle]}>
+              <TouchableOpacity onPress={() => { }}>
+                <EmotionImage style={styles.image} />
+              </TouchableOpacity>
+            </Animated.View>
             <View style={styles.iconsContainer}>
               <TouchableOpacity onPress={goToPreviousEmotion}>
                 <Icon name="arrow-left" size={30} color="#000" />

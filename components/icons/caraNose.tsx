@@ -1,12 +1,8 @@
 import React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
+import { FaceProps } from '@/types/FacesType';
 
-interface CaraNoseProps {
-  width?: number;
-  height?: number;
-}
-
-export default function CaraNose({ width = 210, height = 297 }: CaraNoseProps) {
+export default function CaraNose({ width = 210, height = 297 }: FaceProps) {
   return (
     <Svg width={width} height={height} viewBox="0 0 210 297" id="svg1">
       <G id="layer1">

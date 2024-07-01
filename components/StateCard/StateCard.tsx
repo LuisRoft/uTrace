@@ -4,16 +4,17 @@ import Flags from '@/components/StateCard/Flags';
 import { StateCardProps } from '@/types/StateCardTypes';
 import { styles } from '@/styles/stateCardStyles';
 
-const StateCards: React.FC<StateCardProps> = ({ color, colorFlag, textColor, emotion, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor }) => {
+const StateCards: React.FC<StateCardProps> = ({
+  colorFlag, textColor, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor, customWidth, customHeight 
+}) => {
   const totalCost = activities.reduce((sum, activity) => sum + activity.cost, 0);
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
+    <View style={[styles.container, { backgroundColor, width: customWidth, height: customHeight }]}>
       <View style={styles.leftCont}>
         <EmotionComponent {...emotionProps} />
       </View>
       <View style={styles.centerCont}>
-
         <View style={styles.date}>
           <Text style={{ fontSize: 12, color: textColor }}>{date}</Text>
           <Text style={{ fontSize: 12, color: textColor }}>{hour}</Text>

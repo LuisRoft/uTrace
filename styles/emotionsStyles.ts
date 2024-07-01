@@ -25,7 +25,10 @@ export const styles = StyleSheet.create({
     textShadowRadius: 3,
     elevation: 10,
   },
-
+  animatedContainer: {
+    width: '100%',
+    alignItems: 'center',
+  },
   containerTextActivity: {
     display: 'flex',
     flex: 1,

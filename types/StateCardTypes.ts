@@ -16,4 +16,6 @@ export interface StateCardProps {
     EmotionComponent: React.ComponentType<any>;
     emotionProps: { width: number, height: number };
     backgroundColor: string;
+    customWidth?: number; 
+    customHeight?: number; 
   }
