@@ -99,9 +99,9 @@ export default function SignUp() {
               <LineSeparator />
               <View className="items-center flex-row gap-1">
                 <Text style={{ fontSize: hp(2) }} className="text-center">¿Ya tienes cuenta creada?</Text>
-                <Pressable onPress={() => router.push('signIn')}>
+                <TouchableOpacity onPress={() => router.push('signIn')}>
                   <Text style={{ fontSize: hp(2) }} className="text-center font-bold">Inicia Sesion</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
             </View>

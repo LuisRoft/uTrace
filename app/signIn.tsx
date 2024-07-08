@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { Alert, Image, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import { Images } from "@/constants/Images";
 import { useRef, useState } from "react";
 import { Loading } from "@/components/Loading";
@@ -11,12 +11,16 @@ import { LineSeparator } from "@/components/LineSeparator";
 import { useAuth } from "@/hooks/useAuth";
 import CustomKeyBoardView from "@/components/CustomKeyBoardView";
 
-
 export default function SignIn() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const [loading, setLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const {login} = useAuth();
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const handleLogin = async () => {
     if (!emailRef.current || !passwordRef.current) {
@@ -56,16 +60,22 @@ export default function SignIn() {
               />
             </View>
             <View style={{paddingLeft:wp(4)}}>
-              <View style={{height:(hp(7))}} className="flex-row items-center rounded-xl border-black border-[1px] gap-x-4" >
+              <View style={{height:(hp(7)), position:"relative"}} className="flex-row items-center rounded-xl border-black border-[1px] gap-x-4">
                 <Octicons name="lock"  size={hp(2.7)} color="black" />
                 <TextInput 
                   placeholder="Contraseña"  
                   style={{fontSize: hp(2)}}
                   className="flex-1"
-                  secureTextEntry
+                  secureTextEntry={!isPasswordVisible}
                   placeholderTextColor={'gray'}
                   onChangeText={(text) => passwordRef.current = text}
-                />
+                />                    
+                <TouchableOpacity onPress={togglePasswordVisibility} style={{ padding: hp(1.5) }}>
+                  <Octicons
+                    name={isPasswordVisible ? "eye" : "eye-closed"}
+                    size={hp(2.7)}
+                  />
+                </TouchableOpacity>
               </View>
               <Text style={{fontSize: hp(1.8)}} className="text-right mt-2">Olvidaste tu contraseña?</Text>
             </View>
@@ -87,9 +97,9 @@ export default function SignIn() {
               <LineSeparator />  
               <View className="items-center flex-row gap-1">
                 <Text style={{fontSize: hp(2)}} className="text-center">¿No tienes cuenta?</Text>
-                <Pressable onPress={() => router.push('signUp')}>
+                <TouchableOpacity onPress={() => router.push('signUp')}>
                   <Text style={{fontSize: hp(2)}} className="text-center font-bold">Registrate</Text>
-                </Pressable>
+                </TouchableOpacity>
               </View>
 
             </View> 
