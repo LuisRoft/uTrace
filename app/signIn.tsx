@@ -16,6 +16,7 @@ export default function SignIn() {
   const passwordRef = useRef("");
   const [loading, setLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isIconVisible, setIsIconVisible] = useState(false);
   const {login} = useAuth();
 
   const togglePasswordVisibility = () => {
@@ -68,14 +69,19 @@ export default function SignIn() {
                   className="flex-1"
                   secureTextEntry={!isPasswordVisible}
                   placeholderTextColor={'gray'}
-                  onChangeText={(text) => passwordRef.current = text}
+                  onChangeText={(text) => {
+                    passwordRef.current = text
+                    setIsIconVisible(text.length > 0)
+                  }}
                 />                    
-                <TouchableOpacity onPress={togglePasswordVisibility} style={{ padding: hp(1.5) }}>
-                  <Octicons
-                    name={isPasswordVisible ? "eye" : "eye-closed"}
-                    size={hp(2.7)}
-                  />
-                </TouchableOpacity>
+                { isIconVisible ? (
+                  <TouchableOpacity onPress={togglePasswordVisibility} style={{ padding: hp(2) }}>
+                    <Octicons
+                      name={isPasswordVisible ? "eye" : "eye-closed"}
+                      size={hp(2.7)}
+                    />
+                  </TouchableOpacity> ) : null
+                }
               </View>
               <Text style={{fontSize: hp(1.8)}} className="text-right mt-2">Olvidaste tu contraseña?</Text>
             </View>
