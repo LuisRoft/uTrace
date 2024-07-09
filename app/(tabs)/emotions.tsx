@@ -1,76 +1,127 @@
 import React, { useState } from 'react';
-import { Image, TouchableOpacity, ScrollView, View, TextInput, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform  } from 'react-native';
+import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert, Dimensions } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '@/styles/emotionsStyles';
-import { EmotionButtonContainer } from '@/components/EmotionButtonContainer';
-import { EmotionButton } from '@/types/EmotionButtonTypes';
-import { Images } from '@/constants/Images';
+import EmotionButtonContainer from '@/components/EmotionButtonContainer';
+import ActivityButtonContainer from '@/components/ButtonActivityContainer';
+import { emotions } from '@/components/Emotions';
+import activities from '@/constants/activities';
+import { FIREBASE_DB } from '@/FirebaseConfig';
+import { ref, push } from 'firebase/database';
+import { useAuth } from '@/hooks/useAuth';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const emotionButtons: EmotionButton[][] = [
-  ['Feliz', 'Emocionado', 'Vigoroso'],
-  ['Alegre', 'Ambicioso', 'Triste'],
-  ['Alegre', 'Triste', 'Emocionado'],
-];
+const Emotions: React.FC = () => {
+  const [currentEmotion, setCurrentEmotion] = useState<number>(0);
+  const [selectedEmotionButtons, setSelectedEmotionButtons] = useState<string[]>([]);
+  const [selectedActivityButtons, setSelectedActivityButtons] = useState<string[]>([]);
+  const { user } = useAuth();
+  const translateX = useSharedValue(0);
 
-const images: number[] = [
-  Images.happy, Images.angry, Images.sad
-];
-
-export default function Emotions() {
-  const [currentImage, setCurrentImage] = useState<number>(0);
-  const [description, setDescription] = useState<string>('');
-
-  const goToPreviousImage = () => {
-    setCurrentImage(prevIndex => Math.max(0, prevIndex - 1));
+  const goToPreviousEmotion = () => {
+    translateX.value = withSpring(SCREEN_WIDTH);
+    setTimeout(() => {
+      setCurrentEmotion(prevIndex => (prevIndex === 0 ? emotions.length - 1 : prevIndex - 1));
+      translateX.value = withSpring(0);
+    }, 200);
   };
 
-  const goToNextImage = () => {
-    setCurrentImage(prevIndex => Math.min(images.length - 1, prevIndex + 1));
+  const goToNextEmotion = () => {
+    translateX.value = withSpring(-SCREEN_WIDTH);
+    setTimeout(() => {
+      setCurrentEmotion(prevIndex => (prevIndex === emotions.length - 1 ? 0 : prevIndex + 1));
+      translateX.value = withSpring(0);
+    }, 200);
   };
+
+  const handleEmotionButtonPress = (buttonLabel: string) => {
+    setSelectedEmotionButtons(prevState =>
+      prevState.includes(buttonLabel) ? prevState.filter(label => label !== buttonLabel) : [...prevState, buttonLabel]
+    );
+  };
+
+  const handleActivityButtonPress = (buttonLabel: string) => {
+    setSelectedActivityButtons(prevState =>
+      prevState.includes(buttonLabel) ? prevState.filter(label => label !== buttonLabel) : [...prevState, buttonLabel]
+    );
+  };
+
+  const handleSave = async () => {
+    const currentEmotionData = emotions[currentEmotion];
+    const data = {
+      userId: user?.userId,
+      selectedEmotion: currentEmotion,
+      selectedEmotionButtons,
+      selectedActivityButtons,
+      date: new Date().toISOString(),
+      backgroundColor: currentEmotionData.backgroundColor,
+      containerBackgroundColor: currentEmotionData.containerBackgroundColor,
+    };
+
+    try {
+      await push(ref(FIREBASE_DB, 'userSelections'), data);
+      Alert.alert('Éxito', 'Datos guardados correctamente');
+    } catch (error) {
+      console.error('Error guardando datos: ', error);
+      Alert.alert('Error', 'No se pudieron guardar los datos');
+    }
+  };
+
+  const { image: EmotionImage, buttons, backgroundColor, containerBackgroundColor } = emotions[currentEmotion];
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: translateX.value }],
+    };
+  });
 
   return (
-    <KeyboardAvoidingView 
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={styles.constainerKeyBoard}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ThemedView style={styles.container} darkColor="#FFF">
-          <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-            <View style={styles.content}>
-              <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
-                Hoy
-              </ThemedText>
-              <TouchableOpacity onPress={() => {}}>
-                <Image source={images[currentImage]} style={styles.image} />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.constainerKeyBoard}
+    >
+      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        <ThemedView style={[styles.container, { backgroundColor }]}>
+          <View style={styles.content}>
+            <ThemedText type="subtitle" darkColor="#000" style={styles.title}>
+              Hoy
+            </ThemedText>
+            <Animated.View style={[styles.animatedContainer, animatedStyle]}>
+              <TouchableOpacity onPress={() => { }}>
+                <EmotionImage style={styles.image} />
               </TouchableOpacity>
-              <View style={styles.iconsContainer}>
-                <TouchableOpacity onPress={goToPreviousImage}>
-                  <Icon name="arrow-left" size={30} color="#000" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={goToNextImage}>
-                  <Icon name="arrow-right" size={30} color="#000" />
-                </TouchableOpacity>
-              </View>
-                <EmotionButtonContainer emotionButtons={emotionButtons} />
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                  <View style={styles.descriptionContainer}>
-                    <ThemedText>Descripción</ThemedText>
-                      <TextInput
-                        style={styles.textInput}
-                        value={description}
-                        onChangeText={setDescription}
-                        placeholder="Escribe tu descripción aquí..."
-                        placeholderTextColor="#888"
-                        multiline
-                      />
-                  </View>
-                </TouchableWithoutFeedback>
+            </Animated.View>
+            <View style={styles.iconsContainer}>
+              <TouchableOpacity onPress={goToPreviousEmotion}>
+                <Icon name="arrow-left" size={30} color="#000" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={goToNextEmotion}>
+                <Icon name="arrow-right" size={30} color="#000" />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
+            <EmotionButtonContainer
+              emotionButtons={buttons}
+              containerBackgroundColor={containerBackgroundColor}
+              onButtonPress={handleEmotionButtonPress}
+              selectedButtons={selectedEmotionButtons}
+            />
+            <ActivityButtonContainer
+              activityButtons={activities}
+              containerBackgroundColor={containerBackgroundColor}
+              onButtonPress={handleActivityButtonPress}
+              selectedButtons={selectedActivityButtons}
+            />
+            <TouchableOpacity style={[styles.saveButton, { backgroundColor: containerBackgroundColor }]} onPress={handleSave}>
+              <ThemedText style={styles.saveButtonText}>Guardar</ThemedText>
+            </TouchableOpacity>
+          </View>
         </ThemedView>
-      </TouchableWithoutFeedback>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+};
+
+export default Emotions;

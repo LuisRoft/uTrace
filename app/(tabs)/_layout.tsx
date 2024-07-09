@@ -23,7 +23,7 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="index"
+          name="home"
           options={{
             title: '',
             tabBarIcon: ({ color, focused }) => (
@@ -47,7 +47,7 @@ export default function TabLayout() {
             tabBarIcon: ({}) => (
               <Image
                 source={require('@/assets/images/icon.png')} 
-                style={{ width: 40, height: 40 }} 
+                style={{ width: 40, height: 40, marginTop: 10}} 
               />
             ),
           }}
