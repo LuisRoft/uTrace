@@ -1,6 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
+const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
+    
     container: {
         flex: 1,
         justifyContent: 'flex-start',
@@ -56,6 +58,42 @@ export const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
+    },
+    navbar: {
+        flexDirection: 'row',
+        borderRadius: 10,
+        borderWidth: 1,
+        overflow: 'hidden',
+        marginVertical: 30,
+        marginBottom: 20,
+      },
+    navItem: {
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 15,
+        paddingHorizontal: 25,
+    },
+    navText: {
+        textAlign: 'center',
+        fontSize: 17,
+    },
+    borderLeft: {
+       borderLeftWidth: 0.8,
+    },
+    active: {
+        backgroundColor: '#000',
+    },
+    activeText: {
+        color: '#ffffff',
+    },
+    chartContainer: {
+        alignItems: 'center',
+        marginVertical: 40,
+        borderWidth: 1,
+        borderColor: '#000',
+        borderRadius: 10,
+        width: width * 0.75,
+        padding: 50,
     },
 });
 
