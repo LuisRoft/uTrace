@@ -32,12 +32,12 @@ export const styles = StyleSheet.create({
     },
     chartContainer: {
         alignItems: 'center',
-        marginVertical: 20,
+        marginVertical: 40,
         borderWidth: 1,
-        borderColor: 'black',
+        borderColor: '#000',
         borderRadius: 10,
         width: width * 0.83,
-        padding: 10,
+        padding: 50,
     },
     legendContainer: {
         marginTop: 20,
@@ -56,8 +56,37 @@ export const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         lineHeight: 24,
-        
         color: '#000',
+    },
+    navbar: {
+        flexDirection: 'row',
+        borderRadius: 10,
+        borderWidth: 1,
+        overflow: 'hidden',
+        marginVertical: 30,
+        marginBottom: 20,
+      },
+    
+    navItem: {
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 15,
+        paddingHorizontal: 25,
+    },
+    navText: {
+        textAlign: 'center',
+        fontSize: 17,
+     
+    },
+    borderLeft: {
+       borderLeftWidth: 0.8,
+        
+    },
+    active: {
+        backgroundColor: '#000',
+    },
+      activeText: {
+        color: '#ffffff',
     },
     }
 );
