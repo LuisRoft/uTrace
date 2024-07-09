@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Modal, TouchableOpacity, Text } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -7,11 +7,29 @@ import { styles as calendarStyles, customTheme } from '@/styles/calendarStyles';
 import { useUserSelections } from '@/hooks/useUserSelections';
 import StateCards from '@/components/StateCard/StateCard';
 import { emotions } from '@/components/Emotions';
+import { PieChartComponent } from '@/components/PieChartComponent'; 
+import { Legend } from '@/components/Legend';
+import { useFetchEmotions, getEmotionDataForDate, EmotionData } from '@/hooks/useFetchEmotions';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [userSelections, loading] = useUserSelections();
+  const [userSelections, loadingSelections] = useUserSelections();
+  const [, , , loadingEmotions, fetchEmotionDataForDate] = useFetchEmotions();
+  const [activeTab, setActiveTab] = useState<string>('Emociones');
+  const [selectedDateEmotionData, setSelectedDateEmotionData] = useState<EmotionData[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (user && selectedDate) {
+        const data = await fetchEmotionDataForDate(user.userId, selectedDate);
+        setSelectedDateEmotionData(data);
+      }
+    };
+    fetchData();
+  }, [user, selectedDate, fetchEmotionDataForDate]);
 
   const handleDayPress = (day: DateData) => {
     setSelectedDate(day.dateString);
@@ -46,7 +64,7 @@ export default function CalendarScreen() {
     return marked;
   };
 
-  if (loading) {
+  if (loadingSelections || loadingEmotions) {
     return (
       <ThemedView style={calendarStyles.container}>
         <ThemedText>Cargando...</ThemedText>
@@ -83,8 +101,24 @@ export default function CalendarScreen() {
         <View style={calendarStyles.centeredView}>
           <View style={calendarStyles.modalView}>
             <Text style={calendarStyles.modalText}>Historial del {selectedDate}</Text>
+
+            <View style={calendarStyles.navbar}>
+              <TouchableOpacity
+                style={[calendarStyles.navItem, activeTab === 'Emociones' && calendarStyles.active]}
+                onPress={() => setActiveTab('Emociones')}
+              >
+                <Text style={[calendarStyles.navText, activeTab === 'Emociones' && calendarStyles.activeText]}>Emociones</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[calendarStyles.navItem, calendarStyles.borderLeft, activeTab === 'Reporte' && calendarStyles.active]}
+                onPress={() => setActiveTab('Reporte')}
+              >
+                <Text style={[calendarStyles.navText, activeTab === 'Reporte' && calendarStyles.activeText]}>Reporte</Text>
+              </TouchableOpacity>
+            </View>
+
             <ScrollView showsVerticalScrollIndicator={false}>
-              {userSelections
+              {activeTab === 'Emociones' && userSelections
                 .filter((selection) => selection.date.split('T')[0] === selectedDate)
                 .map((selection, index) => {
                   const emotionData = emotions[selection.selectedEmotion];
@@ -108,6 +142,18 @@ export default function CalendarScreen() {
                     />
                   );
                 })}
+              {activeTab === 'Reporte' && (
+                <View style={calendarStyles.chartContainer}>
+                  {selectedDateEmotionData.length > 0 ? (
+                    <>
+                      <PieChartComponent data={selectedDateEmotionData} />
+                      <Legend data={selectedDateEmotionData} />
+                    </>
+                  ) : (
+                    <ThemedText>No hay datos para esta fecha</ThemedText>
+                  )}
+                </View>
+              )}
             </ScrollView>
             <TouchableOpacity
               style={calendarStyles.closeButton}
