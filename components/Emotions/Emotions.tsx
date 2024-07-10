@@ -1,20 +1,14 @@
-import CaraFeliz from "./icons/caraFeliz";
-import CaraTriste from "./icons/caraTriste";
-import CaraEnojado from "./icons/caraEnojado";
-import CaraMiedo from "./icons/caraMiedo";
-import CaraAsco from "./icons/caraAsco";
-import CaraNose from "./icons/caraNose";
-
-export type Emotions = {
-    image : React.ComponentType<any>;
-    buttons : string[][];
-    backgroundColor : string;
-    containerBackgroundColor : string;
-};
+import FaceHappy from "../icons/FaceHappy";
+import FaceSad from "../icons/FaceSad";
+import FaceAngry from "../icons/FaceAngry";
+import FaceScary from "../icons/FaceScary";
+import FaceDisgust from "../icons/FaceDisgust";
+import FaceNeutral from "../icons/FaceNeutral";
+import { Emotions } from "@/types/EmotionsTypes";
 
 export const emotions: Emotions[] = [
     {
-        image: CaraFeliz,
+        image: FaceHappy,
         buttons: [
             ["Orgulloso", "Feliz", "Provocativo"],
             ["Aceptado", "Inspirado", "Confiado"],
@@ -24,7 +18,7 @@ export const emotions: Emotions[] = [
         containerBackgroundColor: "#FFCE5D"
     },
     {
-        image: CaraTriste,
+        image: FaceSad,
         buttons: [
             ["Ansioso", "Aburrido", "Abrumado"],
             ["Vacio", "Desesperado", "Ignorado"],
@@ -34,7 +28,7 @@ export const emotions: Emotions[] = [
         containerBackgroundColor: '#4B72FE'
     },
     {
-        image: CaraEnojado,
+        image: FaceAngry,
         buttons: [
             ["Distante", "Enfadado", "Hostil"],
             ["Odioso", "Agresivo", "Sospechoso"],
@@ -44,7 +38,7 @@ export const emotions: Emotions[] = [
         containerBackgroundColor: '#FF7A5D'
     },
     {
-        image: CaraMiedo,
+        image: FaceScary,
         buttons: [
             ["Herido", "Sumiso", "Ridiculizado"],
             ["Humillado", "Inseguro", "Pobre"],
@@ -54,7 +48,7 @@ export const emotions: Emotions[] = [
         containerBackgroundColor: '#8229b1'
     },
     {
-        image: CaraAsco,
+        image: FaceDisgust,
         buttons: [
             ["Critico", "Terrible", "Sárcastico"],
             ["Desaprobado", "Evasivo", "Esceptico"],
@@ -64,7 +58,7 @@ export const emotions: Emotions[] = [
         containerBackgroundColor: '#00FF66'
     },
     {
-        image: CaraNose,
+        image: FaceNeutral,
         buttons: [
             ["Muy indiferente", "Indiferente", "Neutro"],
             ["Muy indiferente", "Indiferente", "Neutro"],

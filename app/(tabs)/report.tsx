@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { styles } from '@/styles/activityStyles';
-import { styles as reportStyles } from '@/styles/reportStyles';
-import { PieChartComponent } from '@/components/PieChartComponent'; 
-import { Legend } from '@/components/Legend';
+import { styles } from '@/styles/Emotions/activityStyles';
+import { styles as reportStyles } from '@/styles/Report/reportStyles';
+import { PieChartComponent } from '@/components/Report/PieChartComponent'; 
+import { Legend } from '@/components/Report/Legend';
 import { useFetchEmotions } from '@/hooks/useFetchEmotions';
 
 export default function Report() {

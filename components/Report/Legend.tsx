@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { styles } from '@/styles/reportStyles';
+import { styles } from '@/styles/Report/reportStyles';
 
 interface LegendProps {
     data: any[];

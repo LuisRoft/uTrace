@@ -1,16 +1,12 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import { styles } from '@/styles/emotionsStyles';
+import { styles } from '@/styles/Emotions/emotionsStyles';
 import ButtonAdd from './ButtonAdd';
 import { router } from 'expo-router';
+import { EmotionButtonContainerProps } from '@/types/EmotionButtonTypes';
 
-type EmotionButtonContainerProps = {
-  emotionButtons: string[][];
-  containerBackgroundColor: string;
-  onButtonPress: (buttonLabel: string) => void;
-  selectedButtons: string[];
-};
+
 
 const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotionButtons, containerBackgroundColor, onButtonPress, selectedButtons }) => {
   const onAddPress = () => {

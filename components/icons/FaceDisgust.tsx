@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, { Path, LinearGradient, Stop } from 'react-native-svg';
 import { FaceProps } from '@/types/FacesType';
 
-export default function CaraAsco({ width = 210, height = 297 }: FaceProps) {
+export default function FaceDisgust({ width = 210, height = 297 }: FaceProps) {
   return (
     <Svg width={width} height={height} viewBox="0 0 210 297">
       <LinearGradient

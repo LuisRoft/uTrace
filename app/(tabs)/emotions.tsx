@@ -3,15 +3,16 @@ import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Ale
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { styles } from '@/styles/emotionsStyles';
-import EmotionButtonContainer from '@/components/EmotionButtonContainer';
-import ActivityButtonContainer from '@/components/ButtonActivityContainer';
-import { emotions } from '@/components/Emotions';
+import { styles } from '@/styles/Emotions/emotionsStyles';
+import EmotionButtonContainer from '@/components/Emotions/EmotionButtonContainer';
+import ActivityButtonContainer from '@/components/Emotions/ButtonActivityContainer';
+import { emotions } from '@/components/Emotions/Emotions';
 import activities from '@/constants/activities';
 import { FIREBASE_DB } from '@/FirebaseConfig';
 import { ref, push } from 'firebase/database';
 import { useAuth } from '@/hooks/useAuth';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
