@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ref, get, child } from 'firebase/database';
 import { FIREBASE_DB } from '@/FirebaseConfig';
 import { useAuth } from '@/hooks/useAuth';
@@ -10,35 +10,35 @@ interface UserSelection {
   [key: string]: any;
 }
 
-export const useUserSelections = (): [UserSelection[], boolean] => {
+export const useUserSelections = (): [UserSelection[], boolean, () => void] => {
   const [userSelections, setUserSelections] = useState<UserSelection[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
 
-  useEffect(() => {
-    const fetchUserSelections = async () => {
-      if (!user) return;
+  const fetchUserSelections = useCallback(async () => {
+    if (!user) return;
 
-      try {
-        const snapshot = await get(child(ref(FIREBASE_DB), 'userSelections'));
-        if (snapshot.exists()) {
-          const selectionsArray = Object.values(snapshot.val()) as UserSelection[];
-          const userSpecificSelections = selectionsArray.filter((selection) => 
-            selection.userId === user.userId
-          );
-          setUserSelections(userSpecificSelections);
-        } else {
-          console.log('No data available');
-        }
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      } finally {
-        setLoading(false);
+    try {
+      const snapshot = await get(child(ref(FIREBASE_DB), 'userSelections'));
+      if (snapshot.exists()) {
+        const selectionsArray = Object.values(snapshot.val()) as UserSelection[];
+        const userSpecificSelections = selectionsArray.filter((selection) => 
+          selection.userId === user.userId
+        );
+        setUserSelections(userSpecificSelections);
+      } else {
+        console.log('No data available');
       }
-    };
-
-    fetchUserSelections();
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    } finally {
+      setLoading(false);
+    }
   }, [user]);
 
-  return [userSelections, loading];
+  useEffect(() => {
+    fetchUserSelections();
+  }, [user, fetchUserSelections]);
+
+  return [userSelections, loading, fetchUserSelections];
 };

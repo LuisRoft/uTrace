@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { styles } from "../styles/emotionsStyles";
+import { styles } from "../../styles/Emotions/emotionsStyles";
 
 
 interface RoundButtonProps {
@@ -8,15 +8,15 @@ interface RoundButtonProps {
     color: string;
   }
   
-  const ButtonAddActivity: React.FC<RoundButtonProps> = ({ onPress, color }) => {
+  const ButtonAdd: React.FC<RoundButtonProps> = ({ onPress, color }) => {
     
     return (
       <TouchableOpacity  onPress={onPress}>
-        <View style={styles.plusContainerActivity}>
+        <View style={styles.plusContainer}>
           <Text style={[styles.plusText, {color}]}>+</Text>
         </View>
       </TouchableOpacity>
     );
   };
 
-export default ButtonAddActivity;
+export default ButtonAdd;

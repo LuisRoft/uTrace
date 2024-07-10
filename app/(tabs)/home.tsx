@@ -1,15 +1,22 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { styles } from '@/styles/homeStyles';
+import { View, Text, Image, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { styles } from '@/styles/Home/homeStyles';
 import StateCards from '@/components/StateCard/StateCard';
 import { Images } from '@/constants/Images';
-import { emotions } from '@/components/Emotions';
+import { emotions } from '@/components/Emotions/Emotions';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserSelections } from '@/hooks/useUserSelections';
 
 export default function Home() {
   const { logout, user } = useAuth();
-  const [userSelections, loading] = useUserSelections();
+  const [userSelections, loading, fetchUserSelections] = useUserSelections();
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await fetchUserSelections();
+    setRefreshing(false);
+  }, [fetchUserSelections]);
 
   const handleLogout = async () => {
     await logout();
@@ -45,7 +52,12 @@ export default function Home() {
         </View>
       </View>
       <Text style={styles.textHome}>Registros de hoy</Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.cardContent}>
           {todaySelections.map((selection, index) => {
             const emotionData = emotions[selection.selectedEmotion];

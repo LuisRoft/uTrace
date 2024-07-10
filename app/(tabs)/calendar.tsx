@@ -3,12 +3,12 @@ import { View, ScrollView, Modal, TouchableOpacity, Text } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Calendar, DateData } from 'react-native-calendars';
-import { styles as calendarStyles, customTheme } from '@/styles/calendarStyles';
+import { styles as calendarStyles, customTheme } from '@/styles/Calendar/calendarStyles';
 import { useUserSelections } from '@/hooks/useUserSelections';
 import StateCards from '@/components/StateCard/StateCard';
-import { emotions } from '@/components/Emotions';
-import { PieChartComponent } from '@/components/PieChartComponent'; 
-import { Legend } from '@/components/Legend';
+import { emotions } from '@/components/Emotions/Emotions';
+import { PieChartComponent } from '@/components/Report/PieChartComponent'; 
+import { Legend } from '@/components/Report/Legend';
 import { useFetchEmotions, getEmotionDataForDate, EmotionData } from '@/hooks/useFetchEmotions';
 import { useAuth } from '@/hooks/useAuth';
 

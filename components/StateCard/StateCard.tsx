@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import Flags from '@/components/StateCard/Flags';
 import { StateCardProps } from '@/types/StateCardTypes';
-import { styles } from '@/styles/stateCardStyles';
+import { styles } from '@/styles/StateCard/stateCardStyles';
 
 const StateCards: React.FC<StateCardProps> = ({
   colorFlag, textColor, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor, customWidth, customHeight 

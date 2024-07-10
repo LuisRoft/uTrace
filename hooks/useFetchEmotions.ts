@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ref, get, child, set } from 'firebase/database';
 import { FIREBASE_DB } from '@/FirebaseConfig';
 import { useAuth } from '@/hooks/useAuth';
-import { emotions } from '@/components/Emotions';
+import { emotions } from '@/components/Emotions/Emotions';
 
 export interface EmotionData {
     value: number;
