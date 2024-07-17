@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { styles } from '@/styles/StateCard/flagsActivitieStyles';
+import { styles } from '@/styles/StateCard/flagsStyles';
 
-interface FlagsProps {
+interface FlagsActiviteProps {
   flags: string;
   flagColor: string;
   textColor: string;
 }
 
-const Flags: React.FC<FlagsProps> = ({ flags, flagColor, textColor }) => {
+const FlagsActivitie: React.FC<FlagsActiviteProps> = ({ flags, flagColor, textColor }) => {
   return (
     <View style={[styles.flagsContainer, { backgroundColor: flagColor }]}>
       <Text style={[styles.flags, { color: textColor }]}>{flags}</Text>
@@ -16,4 +16,4 @@ const Flags: React.FC<FlagsProps> = ({ flags, flagColor, textColor }) => {
   );
 };
 
-export default Flags;
+export default FlagsActivitie;
