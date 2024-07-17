@@ -26,7 +26,7 @@ export default function Home() {
     return new Date(date1).toDateString() === new Date(date2).toDateString();
   };
 
-  const todaySelections = userSelections.filter(selection => 
+  const todaySelections = userSelections.filter(selection =>
     isSameDay(selection.date, new Date().toISOString())
   );
 
@@ -66,29 +66,36 @@ export default function Home() {
         }
       >
         <View style={styles.cardContent}>
-          {todaySelections.map((selection, index) => {
-            const { date, time } = extractDateAndTime(selection.date);
-            const emotionData = emotions[selection.selectedEmotion];
-            return (
-              <StateCards
-                key={index}
-                color={selection.backgroundColor}
-                colorFlag={selection.flagColor}
-                textColor={selection.textColor}
-                date={date}
-                hour={time}
-                emotion={selection.selectedEmotionButtons.join(', ')}
-                flags={selection.selectedEmotionButtons}
-                activities={selection.selectedActivityButtons.map((activity: string) => ({ activity, cost: 5 }))}
-                EmotionComponent={emotionData.image}
-                emotionProps={{ width: 100, height: 140 }}
-                backgroundColor={selection.backgroundColor}
-                imageUrl={''}
-                customWidth={315}
-                customHeight={150}
-              />
-            );
-          })}
+          {todaySelections.length === 0 ? (
+            <View style={styles.notRegisterView}>
+              <Image source={Images.nosense} style={styles.notRegisterViewIcon} />
+              <Text style={styles.notRegisterText}>Nada por aquí...</Text>
+            </View>
+          ) : (
+            todaySelections.map((selection, index) => {
+              const { date, time } = extractDateAndTime(selection.date);
+              const emotionData = emotions[selection.selectedEmotion];
+              return (
+                <StateCards
+                  key={index}
+                  color={selection.backgroundColor}
+                  colorFlag={selection.flagColor}
+                  textColor={selection.textColor}
+                  date={date}
+                  hour={time}
+                  emotion={selection.selectedEmotionButtons.join(', ')}
+                  flags={selection.selectedEmotionButtons}
+                  activities={selection.selectedActivityButtons.map((activity: string) => ({ activity, cost: 5 }))}
+                  EmotionComponent={emotionData.image}
+                  emotionProps={{ width: 100, height: 140 }}
+                  backgroundColor={selection.backgroundColor}
+                  imageUrl={''}
+                  customWidth={315}
+                  customHeight={150}
+                />
+              );
+            })
+          )}
         </View>
       </ScrollView>
     </View>
