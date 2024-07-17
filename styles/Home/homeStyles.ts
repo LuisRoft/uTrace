@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     },
     icon: {
       width: 40,
-      height: 40,
+      height: 41,
       marginRight: 10,
     },
     text: {
@@ -43,4 +43,19 @@ export const styles = StyleSheet.create({
       width: 25,
       height: 25,
     },
+    notRegisterView: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: '65%',
+    },
+    notRegisterText: {
+      fontSize: 20,
+      opacity: 0.5,
+    },
+    notRegisterViewIcon: {
+      width: 100,
+      height: 101,
+      opacity: 0.5,
+    }
   });
