@@ -5,7 +5,7 @@ import { styles } from '@/styles/Emotions/emotionsStyles';
 import ButtonAdd from './ButtonAdd';
 import { router } from 'expo-router';
 import { EmotionButtonContainerProps } from '@/types/EmotionButtonTypes';
-
+//Falta estilizar y ver como sube a firebase
 const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotionButtons, containerBackgroundColor, onButtonPress, selectedButtons }) => {
   const [newEmotion, setNewEmotion] = useState('');
   const [showInput, setShowInput] = useState(false);
