@@ -11,53 +11,40 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
-  leftCont: {
-    width: "25%",
-    padding: 12,
+  left: {
+    width: '38%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  centerCont: {
-    paddingHorizontal: 10,
-    paddingTop: 25,
-    paddingBottom: 15,
+  right: {
+    width: '62%',
+    flex: 1,
+    height: '80%',
     display: 'flex',
     flexDirection: 'column',
-    width: "40%",
-    height: "100%",
+    paddingRight: 10,
   },
-  date: {
-    display: 'flex',
+  title: {
+    height: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emotions: {
+    height: '20%',
     flexDirection: 'row',
-    justifyContent: "space-between"
-  },
-  grid: {
-    paddingTop: 10,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  rightCont: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: "space-between",
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    width: "25%",
-    height: "50%",
-    margin: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   activities: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    gap: 10,
-  },
-  costs: {
-    display: 'flex',
+    height: '20%',
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+  },
+  time: {
+    height: '30%',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });

@@ -16,6 +16,7 @@ export const styles = StyleSheet.create({
     textHome: {
       fontWeight: 'bold',
       fontSize: 15,
+      paddingBottom: 10,
     },
     header: {
       marginTop: 20,

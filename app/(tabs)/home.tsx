@@ -30,6 +30,13 @@ export default function Home() {
     isSameDay(selection.date, new Date().toISOString())
   );
 
+  // Función para extraer fecha y hora de la cadena ISO
+  const extractDateAndTime = (isoString: string) => {
+    const [datePart, timePart] = isoString.split('T');
+    const time = timePart.split('Z')[0]; // Eliminar 'Z' al final de la hora
+    return { date: datePart, time };
+  };
+
   if (loading) {
     return (
       <View style={styles.containerHome}>
@@ -60,6 +67,7 @@ export default function Home() {
       >
         <View style={styles.cardContent}>
           {todaySelections.map((selection, index) => {
+            const { date, time } = extractDateAndTime(selection.date);
             const emotionData = emotions[selection.selectedEmotion];
             return (
               <StateCards
@@ -67,13 +75,13 @@ export default function Home() {
                 color={selection.backgroundColor}
                 colorFlag={selection.flagColor}
                 textColor={selection.textColor}
-                date={selection.date}
-                hour={selection.hour}
+                date={date}
+                hour={time}
                 emotion={selection.selectedEmotionButtons.join(', ')}
                 flags={selection.selectedEmotionButtons}
                 activities={selection.selectedActivityButtons.map((activity: string) => ({ activity, cost: 5 }))}
                 EmotionComponent={emotionData.image}
-                emotionProps={{ width: 60, height: 100 }}
+                emotionProps={{ width: 100, height: 140 }}
                 backgroundColor={selection.backgroundColor}
                 imageUrl={''}
                 customWidth={315}
