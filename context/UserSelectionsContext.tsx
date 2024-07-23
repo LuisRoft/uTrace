@@ -47,7 +47,7 @@ export const UserSelectionsProvider: React.FC<{ children: ReactNode }> = ({ chil
   const addUserSelection = async (selection: UserSelection) => {
     try {
       await push(ref(FIREBASE_DB, 'userSelections'), selection);
-      await fetchUserSelections();  // Refresca los datos después de agregar una selección
+      await fetchUserSelections();  
     } catch (error) {
       console.error('Error guardando datos: ', error);
     }

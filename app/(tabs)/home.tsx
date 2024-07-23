@@ -39,7 +39,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchUserSelections();
-  }, [fetchUserSelections]);  // Asegúrate de llamar a fetchUserSelections en el montaje y cuando cambie
+  }, [fetchUserSelections]);  
 
   if (loading) {
     return (

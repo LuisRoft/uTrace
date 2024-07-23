@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     width: '90%',
     borderRadius: 20,
     padding: 10,
-    position: 'relative', // Para permitir la posición del botón de cerrar
+    position: 'relative', 
   },
   closeButton: {
     backgroundColor: '#2196F3',
@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     right: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    zIndex: 1, // Asegurar que el botón esté por encima del contenido
+    zIndex: 1, 
   },
   modalBody: {
     alignItems: 'center',

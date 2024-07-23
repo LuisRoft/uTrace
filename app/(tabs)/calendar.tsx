@@ -66,7 +66,7 @@ export default function CalendarScreen() {
 
   const extractDateAndTime = (isoString: string) => {
     const [datePart, timePart] = isoString.split('T');
-    const time = timePart.split('.')[0]; // Eliminar '.000Z' al final de la hora
+    const time = timePart.split('.')[0]; 
     return { date: datePart, time };
   };
 
@@ -131,7 +131,7 @@ export default function CalendarScreen() {
                   const emotionData = emotions[selection.selectedEmotion];
                   return (
                     <StateCards
-                      key={`${selection.date}-${selection.selectedEmotion}-${index}`}  // Clave única
+                      key={`${selection.date}-${selection.selectedEmotion}-${index}`}  
                       color={selection.backgroundColor}
                       colorFlag={selection.flagColor}
                       textColor={selection.textColor}

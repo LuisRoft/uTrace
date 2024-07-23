@@ -73,10 +73,10 @@ const Emotions: React.FC = () => {
 
     try {
       await push(ref(FIREBASE_DB, 'userSelections'), data);
-      await fetchUserSelections();  // Refresca los datos después de guardar
-      setSelectedEmotionButtons([]);  // Restablecer los botones de emociones seleccionados
-      setSelectedActivityButtons([]);  // Restablecer los botones de actividades seleccionados
-      setDescription(''); // Restablecer la descripción
+      await fetchUserSelections();  
+      setSelectedEmotionButtons([]);  
+      setSelectedActivityButtons([]);  
+      setDescription(''); 
       Alert.alert('Éxito', 'Datos guardados correctamente');
     } catch (error) {
       console.error('Error guardando datos: ', error);
