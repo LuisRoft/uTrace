@@ -1,12 +1,15 @@
-import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import Flags from '@/components/StateCard/Flags';
+import FlagsActivitie from '@/components/StateCard/FlagsActivitie';
 import { StateCardProps } from '@/types/StateCardTypes';
 import { styles } from '@/styles/StateCard/stateCardStyles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const StateCards: React.FC<StateCardProps> = ({
-  colorFlag, textColor, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor, customWidth, customHeight
+  colorFlag, textColor, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor, customWidth, customHeight, description
 }) => {
+  const [modalVisible, setModalVisible] = useState(false);
 
   let mood;
 
@@ -72,77 +75,93 @@ const StateCards: React.FC<StateCardProps> = ({
 
   const { date: formattedDate, time: formattedTime } = formatDateTime(date, hour);
 
-  switch (backgroundColor) {
-    case '#F9F4E2':
-      colorFlag = '#FECD5D';
-      textColor = '#000000';
-      break;
-
-    case '#8DAEEB':
-      colorFlag = '#4B72FE';
-      textColor = '#FFFFFF';
-      break;
-
-    case '#f9ac8c':
-      colorFlag = '#FE814B';
-      textColor = '#FFFFFF';
-      break;
-
-    case '#E7C1FE':
-      colorFlag = '#A44BFE';
-      textColor = '#FFFFFF';
-      break;
-
-    case '#85E0A3':
-      colorFlag = '#48F301';
-      textColor = '#000000';
-      break;
-
-    case '#EAFAFF':
-      colorFlag = '#C4D6FE';
-      textColor = '#000000';
-      break;
-  }
-
   return (
-    <View style={[styles.container, { backgroundColor, width: customWidth, height: customHeight }]}>
-      <View style={styles.left}>
-        <EmotionComponent {...emotionProps} />
-      </View>
+    <>
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <View style={[styles.container, { backgroundColor, width: customWidth, height: customHeight }]}>
+          <View style={styles.left}>
+            <EmotionComponent {...emotionProps} />
+          </View>
 
-      <View style={styles.right}>
-        <View style={styles.title}>
-          <Text style={
-            {
-              color: textColor,
-              fontSize: 14,
-            }
-          }>TE SENTISTE {mood}</Text>
+          <View style={styles.right}>
+            <View style={styles.title}>
+              <Text style={{
+                color: textColor,
+                fontSize: 14,
+              }}>TE SENTISTE {mood}</Text>
+            </View>
+
+            <View style={styles.emotions}>
+              {flags.slice(0, 3).map((flag, index) => (
+                <Flags key={index} flags={flag} flagColor={colorFlag} textColor={textColor} />
+              ))}
+            </View>
+
+            <View style={styles.activities}>
+              {activities.slice(0, 3).map((flag, index) => (
+                <FlagsActivitie key={index} flags={flag.activity} flagColor={textColor} textColor={colorFlag} />
+              ))}
+            </View>
+
+            <View style={styles.time}>
+              <Text style={{
+                color: textColor,
+                fontSize: 14,
+              }}>{formattedTime}</Text>
+            </View>
+
+          </View>
         </View>
+      </TouchableOpacity>
 
-        <View style={styles.emotions}>
-          {flags.slice(0, 3).map((flag, index) => (
-            <Flags key={index} flags={flag} flagColor={colorFlag} textColor={textColor} />
-          ))}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={[styles.modalContent, { backgroundColor }]}>
+            <TouchableOpacity
+              style={[styles.closeButton, { backgroundColor }]}
+              onPress={() => setModalVisible(false)}
+            >
+              <Icon name="times" size={28} color="white" />
+            </TouchableOpacity>
+            <ScrollView contentContainerStyle={styles.modalBody}>
+              <EmotionComponent {...emotionProps} />
+              <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 24, marginTop: 5 }]}>TE SENTISTE {mood}</Text>
+              <View style={styles.modalRow}>
+                <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 17 }]}>Fecha: {formattedDate}</Text>
+                <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 18 }]}>Hora: {formattedTime}</Text>
+              </View>
+              <View style={styles.modalRow}>
+                <View style={styles.modalColumn}>
+                  <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 18 }]}>Sentimientos:</Text>
+                  <View style={styles.modalFlagsContainer}>
+                    {flags.map((flag, index) => (
+                      <Flags key={index} flags={flag} flagColor={colorFlag} textColor={textColor} />
+                    ))}
+                  </View>
+                </View>
+                <View style={styles.modalColumn}>
+                  <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 18 }]}>Actividades:</Text>
+                  <View style={styles.modalFlagsContainer}>
+                    {activities.map((activity, index) => (
+                      <FlagsActivitie key={index} flags={activity.activity} flagColor={textColor} textColor={colorFlag} />
+                    ))}
+                  </View>
+                </View>
+              </View>
+              <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 18 }]}>Descripción:</Text>
+              <Text style={[styles.modalText, { color: textColor, marginBottom: 10 }]}>
+                {description ? description : 'No hay descripción'}
+              </Text>
+            </ScrollView>
+          </View>
         </View>
-
-        <View style={styles.activities}>
-          {activities.slice(0, 3).map((flag, index) => (
-            <Flags key={index} flags={flag.activity} flagColor={textColor} textColor={colorFlag} />
-          ))}
-        </View>
-
-        <View style={styles.time}>
-          <Text style={
-            {
-              color: textColor,
-              fontSize: 14,
-            }
-          }>{formattedTime}</Text>
-        </View>
-
-      </View>
-    </View>
+      </Modal>
+    </>
   );
 };
 

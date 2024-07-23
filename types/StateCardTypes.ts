@@ -18,4 +18,5 @@ export interface StateCardProps {
     backgroundColor: string;
     customWidth?: number; 
     customHeight?: number; 
-  }
+    description?: string;  
+}

@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { styles } from '@/styles/Home/homeStyles';
 import StateCards from '@/components/StateCard/StateCard';
 import { Images } from '@/constants/Images';
 import { emotions } from '@/components/Emotions/Emotions';
 import { useAuth } from '@/hooks/useAuth';
-import { useUserSelections } from '@/hooks/useUserSelections';
+import { useUserSelections } from '@/context/UserSelectionsContext';
 
 export default function Home() {
   const { logout, user } = useAuth();
-  const [userSelections, loading, fetchUserSelections] = useUserSelections();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const { userSelections, loading, fetchUserSelections } = useUserSelections();
+  const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -36,6 +36,10 @@ export default function Home() {
     const time = timePart.split('Z')[0]; // Eliminar 'Z' al final de la hora
     return { date: datePart, time };
   };
+
+  useEffect(() => {
+    fetchUserSelections();
+  }, [fetchUserSelections]);  // Asegúrate de llamar a fetchUserSelections en el montaje y cuando cambie
 
   if (loading) {
     return (
@@ -92,6 +96,7 @@ export default function Home() {
                   imageUrl={''}
                   customWidth={315}
                   customHeight={150}
+                  description={selection.description}  
                 />
               );
             })

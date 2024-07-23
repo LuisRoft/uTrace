@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert, Dimensions } from 'react-native';
+import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert, Dimensions, TextInput } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,7 +12,7 @@ import { FIREBASE_DB } from '@/FirebaseConfig';
 import { ref, push } from 'firebase/database';
 import { useAuth } from '@/hooks/useAuth';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-
+import { useUserSelections } from '@/context/UserSelectionsContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -20,8 +20,10 @@ const Emotions: React.FC = () => {
   const [currentEmotion, setCurrentEmotion] = useState<number>(0);
   const [selectedEmotionButtons, setSelectedEmotionButtons] = useState<string[]>([]);
   const [selectedActivityButtons, setSelectedActivityButtons] = useState<string[]>([]);
+  const [description, setDescription] = useState<string>('');
   const { user } = useAuth();
   const translateX = useSharedValue(0);
+  const { fetchUserSelections } = useUserSelections();
 
   const goToPreviousEmotion = () => {
     translateX.value = withSpring(SCREEN_WIDTH);
@@ -52,12 +54,18 @@ const Emotions: React.FC = () => {
   };
 
   const handleSave = async () => {
+    if (selectedEmotionButtons.length === 0 || selectedActivityButtons.length === 0) {
+      Alert.alert('Error', 'Debe seleccionar al menos un sentimiento y una actividad');
+      return;
+    }
+
     const currentEmotionData = emotions[currentEmotion];
     const data = {
       userId: user?.userId,
       selectedEmotion: currentEmotion,
       selectedEmotionButtons,
       selectedActivityButtons,
+      description,
       date: new Date().toISOString(),
       backgroundColor: currentEmotionData.backgroundColor,
       containerBackgroundColor: currentEmotionData.containerBackgroundColor,
@@ -65,6 +73,10 @@ const Emotions: React.FC = () => {
 
     try {
       await push(ref(FIREBASE_DB, 'userSelections'), data);
+      await fetchUserSelections();  // Refresca los datos después de guardar
+      setSelectedEmotionButtons([]);  // Restablecer los botones de emociones seleccionados
+      setSelectedActivityButtons([]);  // Restablecer los botones de actividades seleccionados
+      setDescription(''); // Restablecer la descripción
       Alert.alert('Éxito', 'Datos guardados correctamente');
     } catch (error) {
       console.error('Error guardando datos: ', error);
@@ -115,6 +127,15 @@ const Emotions: React.FC = () => {
               onButtonPress={handleActivityButtonPress}
               selectedButtons={selectedActivityButtons}
             />
+            <View style={[styles.descriptionContainer, { backgroundColor: containerBackgroundColor }]}>
+              <TextInput
+                style={styles.descriptionInput}
+                placeholder="Añadir una descripción"
+                value={description}
+                onChangeText={setDescription}
+                multiline={true}
+              />
+            </View>
             <TouchableOpacity style={[styles.saveButton, { backgroundColor: containerBackgroundColor }]} onPress={handleSave}>
               <ThemedText style={styles.saveButtonText}>Guardar</ThemedText>
             </TouchableOpacity>

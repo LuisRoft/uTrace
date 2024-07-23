@@ -4,6 +4,7 @@ import { Fonts } from "@/constants/Fonts";
 import * as SplashScreen from 'expo-splash-screen';
 import MainLayout from '@/components/MainLayout';
 import { AuthContextProvider } from '@/context/authContext';
+import { UserSelectionsProvider } from '@/context/UserSelectionsContext'; // Importa el proveedor del contexto
 
 SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
@@ -20,7 +21,9 @@ export default function RootLayout() {
     
     return (
         <AuthContextProvider>
-            <MainLayout />
+            <UserSelectionsProvider>
+                <MainLayout />
+            </UserSelectionsProvider>
         </AuthContextProvider>
     );
 }

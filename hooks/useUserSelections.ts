@@ -18,6 +18,8 @@ export const useUserSelections = (): [UserSelection[], boolean, () => void] => {
   const fetchUserSelections = useCallback(async () => {
     if (!user) return;
 
+    setLoading(true); // Asegurarse de que se está cargando mientras se recuperan los datos
+
     try {
       const snapshot = await get(child(ref(FIREBASE_DB), 'userSelections'));
       if (snapshot.exists()) {
