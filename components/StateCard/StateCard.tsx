@@ -5,11 +5,13 @@ import FlagsActivitie from '@/components/StateCard/FlagsActivitie';
 import { StateCardProps } from '@/types/StateCardTypes';
 import { styles } from '@/styles/StateCard/stateCardStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const StateCards: React.FC<StateCardProps> = ({
-  colorFlag, textColor, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor, customWidth, customHeight, description
+  colorFlag, textColor, date, hour, flags, activities, EmotionComponent, emotionProps, backgroundColor, customWidth, customHeight, description, id, onDelete
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
 
   let mood;
 
@@ -51,7 +53,7 @@ const StateCards: React.FC<StateCardProps> = ({
       break;
 
     default:
-      mood = "DESCONOCIDO"; // Opcional: para manejar colores no especificados
+      mood = "DESCONOCIDO"; 
       break;
   }
 
@@ -74,6 +76,15 @@ const StateCards: React.FC<StateCardProps> = ({
   };
 
   const { date: formattedDate, time: formattedTime } = formatDateTime(date, hour);
+
+  const confirmDelete = async () => {
+    try {
+      await onDelete(id);
+      setAlertVisible(false);
+    } catch (error) {
+      console.error('Error eliminando datos: ', error);
+    }
+  };
 
   return (
     <>
@@ -128,6 +139,12 @@ const StateCards: React.FC<StateCardProps> = ({
             >
               <Icon name="times" size={28} color="white" />
             </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.deleteButton, { backgroundColor }]}
+              onPress={() => setAlertVisible(true)}
+            >
+              <Icon name="trash" size={28} color="white" />
+            </TouchableOpacity>
             <ScrollView contentContainerStyle={styles.modalBody}>
               <EmotionComponent {...emotionProps} />
               <Text style={[styles.modalText, { color: textColor, fontWeight: 'bold', fontSize: 24, marginTop: 5 }]}>TE SENTISTE {mood}</Text>
@@ -161,6 +178,22 @@ const StateCards: React.FC<StateCardProps> = ({
           </View>
         </View>
       </Modal>
+
+      <AwesomeAlert
+        show={alertVisible}
+        showProgress={false}
+        title="Confirmación"
+        message="¿Estás seguro que deseas eliminar esta selección?"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showCancelButton={true}
+        showConfirmButton={true}
+        cancelText="Cancelar"
+        confirmText="Eliminar"
+        confirmButtonColor="#DD6B55"
+        onCancelPressed={() => setAlertVisible(false)}
+        onConfirmPressed={confirmDelete}
+      />
     </>
   );
 };

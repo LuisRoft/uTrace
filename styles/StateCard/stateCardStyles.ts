@@ -95,4 +95,15 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  deleteButton: {
+    backgroundColor: '#FF0000',
+    borderRadius: 20,
+    padding: 10,
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
 });

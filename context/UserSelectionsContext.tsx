@@ -1,11 +1,12 @@
 import React, { createContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { ref, get, child, push } from 'firebase/database';
+import { ref, get, child, push, remove } from 'firebase/database';
 import { FIREBASE_DB } from '@/FirebaseConfig';
 import { useAuth } from '@/hooks/useAuth';
 
 interface UserSelection {
   userId: string;
   date: string;
+  id: number; // Añadir el id aquí
   selectedEmotion: number;
   [key: string]: any;
 }
@@ -15,6 +16,7 @@ interface UserSelectionsContextType {
   loading: boolean;
   fetchUserSelections: () => void;
   addUserSelection: (selection: UserSelection) => void;
+  deleteUserSelection: (id: number) => void; // Añadir esta función
 }
 
 const UserSelectionsContext = createContext<UserSelectionsContextType | undefined>(undefined);
@@ -53,12 +55,21 @@ export const UserSelectionsProvider: React.FC<{ children: ReactNode }> = ({ chil
     }
   };
 
+  const deleteUserSelection = useCallback(async (id: number) => {
+    try {
+      await remove(ref(FIREBASE_DB, `userSelections/${id}`));
+      setUserSelections(prevSelections => prevSelections.filter(selection => selection.id !== id));
+    } catch (error) {
+      console.error('Error eliminando datos: ', error);
+    }
+  }, []);
+
   useEffect(() => {
     fetchUserSelections();
   }, [user, fetchUserSelections]);
 
   return (
-    <UserSelectionsContext.Provider value={{ userSelections, loading, fetchUserSelections, addUserSelection }}>
+    <UserSelectionsContext.Provider value={{ userSelections, loading, fetchUserSelections, addUserSelection, deleteUserSelection }}>
       {children}
     </UserSelectionsContext.Provider>
   );

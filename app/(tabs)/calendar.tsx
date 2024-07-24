@@ -15,7 +15,7 @@ import { useAuth } from '@/hooks/useAuth';
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const { userSelections, loading } = useUserSelections();
+  const { userSelections, loading, deleteUserSelection } = useUserSelections(); // Añadir deleteUserSelection aquí
   const [,,, loadingEmotions] = useFetchEmotions(userSelections);
   const [activeTab, setActiveTab] = useState<string>('Emociones');
   const [selectedDateEmotionData, setSelectedDateEmotionData] = useState<EmotionData[]>([]);
@@ -68,6 +68,14 @@ export default function CalendarScreen() {
     const [datePart, timePart] = isoString.split('T');
     const time = timePart.split('.')[0]; 
     return { date: datePart, time };
+  };
+
+  const handleDeleteSelection = async (id: number) => {
+    try {
+      await deleteUserSelection(id);
+    } catch (error) {
+      console.error('Error eliminando datos: ', error);
+    }
   };
 
   if (loading || loadingEmotions) {
@@ -147,6 +155,8 @@ export default function CalendarScreen() {
                       customWidth={260}
                       customHeight={150}
                       description={selection.description}  // Pasar la descripción aquí
+                      id={selection.id}  // Pasar el ID aquí
+                      onDelete={handleDeleteSelection}  // Pasar la función de eliminación aquí
                     />
                   );
                 })}

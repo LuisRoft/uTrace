@@ -9,7 +9,7 @@ import { useUserSelections } from '@/context/UserSelectionsContext';
 
 export default function Home() {
   const { logout, user } = useAuth();
-  const { userSelections, loading, fetchUserSelections } = useUserSelections();
+  const { userSelections, loading, fetchUserSelections, deleteUserSelection } = useUserSelections(); // Añadir deleteUserSelection aquí
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = React.useCallback(async () => {
@@ -22,6 +22,14 @@ export default function Home() {
     await logout();
   };
 
+  const handleDeleteSelection = async (id: number) => {
+    try {
+      await deleteUserSelection(id);
+    } catch (error) {
+      console.error('Error eliminando datos: ', error);
+    }
+  };
+
   const isSameDay = (date1: string, date2: string) => {
     return new Date(date1).toDateString() === new Date(date2).toDateString();
   };
@@ -30,16 +38,15 @@ export default function Home() {
     isSameDay(selection.date, new Date().toISOString())
   );
 
-  // Función para extraer fecha y hora de la cadena ISO
   const extractDateAndTime = (isoString: string) => {
     const [datePart, timePart] = isoString.split('T');
-    const time = timePart.split('Z')[0]; // Eliminar 'Z' al final de la hora
+    const time = timePart.split('Z')[0];
     return { date: datePart, time };
   };
 
   useEffect(() => {
     fetchUserSelections();
-  }, [fetchUserSelections]);  
+  }, [fetchUserSelections]);
 
   if (loading) {
     return (
@@ -81,7 +88,8 @@ export default function Home() {
               const emotionData = emotions[selection.selectedEmotion];
               return (
                 <StateCards
-                  key={index}
+                  key={selection.id}
+                  id={selection.id}
                   color={selection.backgroundColor}
                   colorFlag={selection.flagColor}
                   textColor={selection.textColor}
@@ -96,7 +104,8 @@ export default function Home() {
                   imageUrl={''}
                   customWidth={315}
                   customHeight={150}
-                  description={selection.description}  
+                  description={selection.description}
+                  onDelete={handleDeleteSelection}  
                 />
               );
             })
