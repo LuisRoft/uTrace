@@ -3,22 +3,21 @@ import { View, TouchableOpacity, TextInput } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { styles } from '@/styles/Emotions/emotionsStyles';
 import ButtonAdd from './ButtonAdd';
-import { router } from 'expo-router';
 import { EmotionButtonContainerProps } from '@/types/EmotionButtonTypes';
-//Falta estilizar y ver como sube a firebase
+
 const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotionButtons, containerBackgroundColor, onButtonPress, selectedButtons }) => {
   const [newEmotion, setNewEmotion] = useState('');
   const [showInput, setShowInput] = useState(false);
 
   const onAddPress = () => {
-    setShowInput(true);
+    setShowInput(prevState => !prevState);
   };
 
   const onAddEmotion = () => {
     if (newEmotion.trim()) {
       emotionButtons.push([newEmotion]);
       setNewEmotion('');
-      setShowInput(false); // Ocultar el input después de agregar el sentimiento
+      setShowInput(false);
     }
   };
 
@@ -36,7 +35,7 @@ const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotion
             value={newEmotion}
             onChangeText={setNewEmotion}
           />
-          <TouchableOpacity onPress={onAddEmotion} style={styles.addButton}>
+          <TouchableOpacity onPress={onAddEmotion} style={[styles.addButton, { backgroundColor: containerBackgroundColor }]}>
             <ThemedText style={styles.addButtonText}>Agregar</ThemedText>
           </TouchableOpacity>
         </View>

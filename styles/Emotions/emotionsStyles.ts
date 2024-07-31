@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -104,18 +105,6 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
   },
-  descriptionContainer: {
-    backgroundColor: '#FFD700',
-    padding: 10,
-    borderRadius: 15,
-    width: '100%',
-    marginBottom: 100,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 10,
-  },
   scrollContainer: {
     display: 'flex',
     width: '100%',
@@ -200,62 +189,57 @@ export const styles = StyleSheet.create({
   addEmotionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-  }, //de aquí para bajo se agrego para lo de "agregar sentimiento"
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
   input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingLeft: 8,
     flex: 1,
+    backgroundColor: '#FFF',
+    borderRadius: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     marginRight: 10,
-    borderRadius: 5,
+    elevation: 4,
+    borderColor: '#ddd',
+    borderWidth: 1,
   },
   addButton: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    elevation: 4,
+    borderColor: '#ddd',
+    borderWidth: 1,
   },
   addButtonText: {
-    color: 'white',
+    color: '#FFF',
+    fontWeight: 'bold',
   },
-  emotionSwitchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+  page: {
+    width: SCREEN_WIDTH - 40,
+    paddingHorizontal: 10,
+  },
+  descriptionContainer: {
+    width: '100%',
+    height: 200,
     marginTop: 20,
-  },
-  emotionSwitchButton: {
-    padding: 10,
-    marginHorizontal: 5,
-    borderRadius: 5,
-    backgroundColor: '#f0f0f0',
-  },
-  selectedEmotionSwitchButton: {
-    backgroundColor: '#d0d0d0',
-  },
-  emotionSwitchButtonText: {
-    fontSize: 16,
-    color: '#000',
-  },
-  addActivityContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
-    backgroundColor: 'white',
+    paddingHorizontal:50,
+    paddingVertical : 30,
     borderRadius: 10,
-    padding: 10,
+    elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+  },
+  descriptionInput: {
+    backgroundColor: '#FFF',
+    borderRadius: 10,
+    padding: 30,
+    width: 210 ,
+    height: 140,
+    textAlignVertical: 'top', 
   },
 });

@@ -1,9 +1,10 @@
 export type ActivitieProps = {
     activity: string;
     cost: number;
-}
-
-export interface StateCardProps {
+  }
+  
+  export interface StateCardProps {
+    id: number;
     color: string;
     colorFlag: string;
     textColor: string;
@@ -18,4 +19,7 @@ export interface StateCardProps {
     backgroundColor: string;
     customWidth?: number; 
     customHeight?: number; 
+    description?: string;  
+    onDelete: (id: number) => void; 
   }
+  

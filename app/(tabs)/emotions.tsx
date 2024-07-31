@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Alert, Dimensions } from 'react-native';
+import { TouchableOpacity, ScrollView, View, KeyboardAvoidingView, Platform, Dimensions, TextInput } from 'react-native';
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -9,10 +9,11 @@ import ActivityButtonContainer from '@/components/Emotions/ButtonActivityContain
 import { emotions } from '@/components/Emotions/Emotions';
 import activities from '@/constants/activities';
 import { FIREBASE_DB } from '@/FirebaseConfig';
-import { ref, push } from 'firebase/database';
+import { ref, push, set } from 'firebase/database';
 import { useAuth } from '@/hooks/useAuth';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-
+import { useUserSelections } from '@/context/UserSelectionsContext';
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -20,8 +21,12 @@ const Emotions: React.FC = () => {
   const [currentEmotion, setCurrentEmotion] = useState<number>(0);
   const [selectedEmotionButtons, setSelectedEmotionButtons] = useState<string[]>([]);
   const [selectedActivityButtons, setSelectedActivityButtons] = useState<string[]>([]);
+  const [description, setDescription] = useState<string>('');
+  const [successAlertVisible, setSuccessAlertVisible] = useState<boolean>(false);
+  const [errorAlertVisible, setErrorAlertVisible] = useState<boolean>(false);
   const { user } = useAuth();
   const translateX = useSharedValue(0);
+  const { fetchUserSelections } = useUserSelections();
 
   const goToPreviousEmotion = () => {
     translateX.value = withSpring(SCREEN_WIDTH);
@@ -52,23 +57,34 @@ const Emotions: React.FC = () => {
   };
 
   const handleSave = async () => {
+    if (selectedEmotionButtons.length === 0 || selectedActivityButtons.length === 0) {
+      setErrorAlertVisible(true);
+      return;
+    }
+  
     const currentEmotionData = emotions[currentEmotion];
     const data = {
       userId: user?.userId,
       selectedEmotion: currentEmotion,
       selectedEmotionButtons,
       selectedActivityButtons,
+      description,
       date: new Date().toISOString(),
       backgroundColor: currentEmotionData.backgroundColor,
       containerBackgroundColor: currentEmotionData.containerBackgroundColor,
     };
-
+  
     try {
-      await push(ref(FIREBASE_DB, 'userSelections'), data);
-      Alert.alert('Éxito', 'Datos guardados correctamente');
+      const newSelectionRef = push(ref(FIREBASE_DB, 'userSelections'));
+      await set(newSelectionRef, { ...data, id: newSelectionRef.key });
+      await fetchUserSelections();  
+      setSelectedEmotionButtons([]);  
+      setSelectedActivityButtons([]);  
+      setDescription(''); 
+      setSuccessAlertVisible(true);
     } catch (error) {
       console.error('Error guardando datos: ', error);
-      Alert.alert('Error', 'No se pudieron guardar los datos');
+      setErrorAlertVisible(true);
     }
   };
 
@@ -115,12 +131,47 @@ const Emotions: React.FC = () => {
               onButtonPress={handleActivityButtonPress}
               selectedButtons={selectedActivityButtons}
             />
+            <View style={[styles.descriptionContainer, { backgroundColor: containerBackgroundColor }]}>
+              <TextInput
+                style={styles.descriptionInput}
+                placeholder="Añadir una descripción"
+                value={description}
+                onChangeText={setDescription}
+                multiline={true}
+              />
+            </View>
             <TouchableOpacity style={[styles.saveButton, { backgroundColor: containerBackgroundColor }]} onPress={handleSave}>
               <ThemedText style={styles.saveButtonText}>Guardar</ThemedText>
             </TouchableOpacity>
           </View>
         </ThemedView>
       </ScrollView>
+
+      <AwesomeAlert
+        show={successAlertVisible}
+        showProgress={false}
+        title="Éxito"
+        message="Datos guardados correctamente"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showConfirmButton={true}
+        confirmText="Aceptar"
+        confirmButtonColor="#A7DD55"
+        onConfirmPressed={() => setSuccessAlertVisible(false)}
+      />
+
+      <AwesomeAlert
+        show={errorAlertVisible}
+        showProgress={false}
+        title="Error"
+        message="Debe seleccionar al menos un sentimiento y una actividad"
+        closeOnTouchOutside={true}
+        closeOnHardwareBackPress={false}
+        showConfirmButton={true}
+        confirmText="Aceptar"
+        confirmButtonColor="#DD6B55"
+        onConfirmPressed={() => setErrorAlertVisible(false)}
+      />
     </KeyboardAvoidingView>
   );
 };
