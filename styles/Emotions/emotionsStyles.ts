@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: '#F9F4E2',
   },
-  constainerKeyBoard :{
+  constainerKeyBoard: {
     flex: 1,
   },
   containerText: {
@@ -34,7 +34,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     marginStart: 2,
-
     color: '#fff',
     alignItems: 'center',
     fontWeight: 'bold',
@@ -43,7 +42,6 @@ export const styles = StyleSheet.create({
     textShadowRadius: 3,
     elevation: 10,
   },
-
   activityButtonContainer: {
     paddingVertical: 3,
     paddingHorizontal: 30,
@@ -54,7 +52,6 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 10,
   },
-
   inner: {
     flex: 1,
     justifyContent: 'space-between',
@@ -78,21 +75,20 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
-  
   emotionButtonContainer: {
-      width: '100%',
-      alignItems: 'center',
-      paddingVertical: 13,
-      borderWidth: 0,
-      borderColor: '#ddd',
-      borderRadius: 15,
-      marginBottom: 20,
-      backgroundColor: '#FFD700',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 10,
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 13,
+    borderWidth: 0,
+    borderColor: '#ddd',
+    borderRadius: 15,
+    marginBottom: 20,
+    backgroundColor: '#FFD700',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
   },
   buttonRow: {
     flexDirection: 'row',
@@ -110,20 +106,19 @@ export const styles = StyleSheet.create({
     color: '#000',
   },
   scrollContainer: {
-      display: 'flex',
-      width: '100%',
-      alignItems: 'center',
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
   },
   textInput: {
     backgroundColor: '#FFF',
     padding: 10,
     borderRadius: 15,
-    paddingHorizontal : 50,
-    marginTop: 10, 
-    height: 100, 
-    verticalAlign: 'top', 
+    paddingHorizontal: 50,
+    marginTop: 10,
+    height: 100,
+    verticalAlign: 'top',
   },
-
   buttonAdd: {
     width: 10,
     padding: 10,
@@ -145,7 +140,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   plusContainerActivity: {
     display: 'flex',
     left: 12,
@@ -158,7 +152,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
   plusText: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -169,7 +162,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   selectedButton: {
-    backgroundColor: '#cccccc', 
+    backgroundColor: '#cccccc',
   },
   headerContainer: {
     flexDirection: 'row',

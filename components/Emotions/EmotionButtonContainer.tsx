@@ -17,7 +17,7 @@ const EmotionButtonContainer: React.FC<EmotionButtonContainerProps> = ({ emotion
     if (newEmotion.trim()) {
       emotionButtons.push([newEmotion]);
       setNewEmotion('');
-      setShowInput(false); 
+      setShowInput(false);
     }
   };
 
