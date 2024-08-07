@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { styles } from '@/styles/StateCard/flagsActivitieStyles';
+import { styles } from '@/styles/flagsStyles';
 
 interface FlagsProps {
   flags: string;

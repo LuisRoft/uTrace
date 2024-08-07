@@ -1,9 +1,8 @@
 import { AuthContextType, AuthProviderProps, LoginCredentials, RegisterInfo, User } from "@/types/authType";
 import { createContext, useState, useEffect, FC } from "react";
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, sendEmailVerification } from "firebase/auth";
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "@/FirebaseConfig";
 import { ref, set } from 'firebase/database'
-import { Alert } from "react-native";
 
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -69,13 +68,19 @@ export const AuthContextProvider: FC<AuthProviderProps> = ({ children }) => {
 
       if (currentUser) {
         await updateProfile(currentUser, { displayName: username });
-        await sendEmailVerification(currentUser);
+        await currentUser.reload();
+        await updateDataUser(currentUser);
       } else {
         throw new Error('No user is currently signed in.');
       } 
 
       console.log('response.user: ', response?.user);
   
+      await set(ref(FIREBASE_DB, 'users/' + response?.user?.uid), {
+        username,
+        email,
+        userId: response?.user?.uid
+      });
       return {success: true, data: response?.user}
     } catch (e:any) {
       let msg = e.message;

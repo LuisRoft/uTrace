@@ -7,5 +7,5 @@ export default function AddEmotion() {
     <View style={{ backgroundColor: '#ffff' ,flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ThemedText type='title' style={{color:'black'}}>IN PROCESS...</ThemedText>
     </View>
-);  
+);
 }
