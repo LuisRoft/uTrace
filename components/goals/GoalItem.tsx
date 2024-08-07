@@ -12,11 +12,30 @@ interface GoalItemProps {
 }
 
 const GoalItem: React.FC<GoalItemProps> = ({ goal, handleGoalCompletion, handleDeleteGoal, isDeleteMode }) => {
+  const calculateDaysLeftOrOverdue = () => {
+    if (!goal.endDate) return '';
+    const today = new Date();
+    const endDate = new Date(goal.endDate);
+    const diffTime = endDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) {
+      return `Días de atraso: ${Math.abs(diffDays)}`;
+    } else {
+      return `Días restantes: ${diffDays}`;
+    }
+  };
+
   return (
     <View style={styles.goalContainer}>
       <ThemedText style={styles.goalText}>{goal.name}</ThemedText>
       <ThemedText style={styles.goalDescription}>{goal.description}</ThemedText>
-      <ThemedText style={styles.goalDate}>{goal.startDate} - {goal.streak} días en racha</ThemedText>
+      <ThemedText style={styles.goalDate}>
+        {goal.startDate} - {goal.streak} días en racha
+      </ThemedText>
+      {goal.type === 'Específico' && (
+        <ThemedText style={styles.goalDate}>{calculateDaysLeftOrOverdue()}</ThemedText>
+      )}
       <View style={styles.buttonContainer}>
         {!goal.completedToday && (
           <>

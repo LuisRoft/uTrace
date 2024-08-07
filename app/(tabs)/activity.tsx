@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from '@/styles/goalsStyles';
@@ -9,11 +9,13 @@ import AddGoalModal from '@/components/goals/AddGoalModal';
 import { ThemedText } from '@/components/ThemedText';
 
 interface Goal {
+  completed: unknown;
   id: number;
   type: string;
   name: string;
   description: string;
   startDate: string;
+  endDate?: string; // Hacer que endDate sea opcional
   streak: number;
   lastCompleted: string;
   completedToday: boolean;
@@ -24,6 +26,7 @@ const GoalsScreen: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   useEffect(() => {
     const loadGoals = async () => {
@@ -84,7 +87,8 @@ const GoalsScreen: React.FC = () => {
           streak: isCompleted ? goal.streak + 1 : 0,
           lastCompleted: today,
           completedToday: true,
-          completionType: isCompleted ? 'success' : 'fail'
+          completionType: isCompleted ? 'success' : 'fail',
+          completed: isCompleted,
         };
       }
       return goal;
@@ -119,15 +123,19 @@ const GoalsScreen: React.FC = () => {
     setIsDeleteMode(!isDeleteMode);
   };
 
+  const toggleShowCompleted = () => {
+    setShowCompleted(!showCompleted);
+  };
+
   return (
     <ThemedView style={styles.container}>
       <Header onAddPress={() => setShowModal(true)} onDeletePress={toggleDeleteMode} />
       <ScrollView>
         <View style={styles.inner}>
-          {goals.filter(goal => goal.type === 'Diario').length > 0 && (
+          {goals.filter(goal => goal.type === 'Diario' && !goal.completed).length > 0 && (
             <>
               <ThemedText style={styles.subTitle}>Diarios</ThemedText>
-              {goals.filter(goal => goal.type === 'Diario').map((goal) => (
+              {goals.filter(goal => goal.type === 'Diario' && !goal.completed).map((goal) => (
                 <GoalItem
                   key={goal.id}
                   goal={goal}
@@ -138,14 +146,32 @@ const GoalsScreen: React.FC = () => {
               ))}
             </>
           )}
-          {goals.filter(goal => goal.type === 'Específico').length > 0 && (
+          {goals.filter(goal => goal.type === 'Específico' && !goal.completed).length > 0 && (
             <>
               <ThemedText style={styles.subTitle}>Específicos</ThemedText>
-              {goals.filter(goal => goal.type === 'Específico').map((goal) => (
+              {goals.filter(goal => goal.type === 'Específico' && !goal.completed).map((goal) => (
                 <GoalItem
                   key={goal.id}
                   goal={goal}
                   handleGoalCompletion={handleGoalCompletion}
+                  handleDeleteGoal={handleDeleteGoal}
+                  isDeleteMode={isDeleteMode}
+                />
+              ))}
+            </>
+          )}
+          <TouchableOpacity onPress={toggleShowCompleted} style={styles.toggleCompletedButton}>
+            <ThemedText style={styles.toggleCompletedButtonText}>
+              {showCompleted ? 'Ocultar Completados' : 'Mostrar Completados'}
+            </ThemedText>
+          </TouchableOpacity>
+          {showCompleted && goals.filter(goal => goal.completed).length > 0 && (
+            <>
+              <ThemedText style={styles.subTitle}>Completados</ThemedText>
+              {goals.filter(goal => goal.completed).map((goal) => (
+                <GoalItem
+                  key={goal.id}
+                  goal={goal}
                   handleDeleteGoal={handleDeleteGoal}
                   isDeleteMode={isDeleteMode}
                 />

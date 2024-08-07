@@ -123,6 +123,29 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     width: '100%',
   },
+  datePickerButton: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+  datePickerButtonText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  noEndDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  noEndDateText: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#000',
+  },
   closeButton: {
     marginTop: 20,
     alignItems: 'center',
@@ -172,5 +195,17 @@ export const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
+  },
+  toggleCompletedButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#6200EE',
+    padding: 10,
+    borderRadius: 5,
+    marginBottom: 20,
+  },
+  toggleCompletedButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
