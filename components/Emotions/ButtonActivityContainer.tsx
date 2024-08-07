@@ -3,7 +3,6 @@ import { View, TouchableOpacity, TextInput } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { styles } from '@/styles/Emotions/emotionsStyles';
 import ButtonAddActivity from './ButtonAddActivity';
-import { router } from 'expo-router';
 import { ActivityButtonContainerProps } from '@/types/ButtonActivityContainerTypes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -34,30 +33,25 @@ const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activ
     }
   };
 
+  const onAddPress = () => {
+    setShowInput(prevState => !prevState);
+  };
+
   const onAddActivity = () => {
     if (newActivity.trim()) {
-      const updatedButtons = [...buttons];
-      if (updatedButtons[updatedButtons.length - 1].length < 3) {
-        updatedButtons[updatedButtons.length - 1].push(newActivity);
-      } else {
-        updatedButtons.push([newActivity]);
-      }
+      const updatedButtons = [...buttons, [newActivity]];
       setButtons(updatedButtons);
       saveActivities(updatedButtons);
       setNewActivity('');
-      setShowInput(false); // Ocultar el input después de agregar la actividad
+      setShowInput(false);
     }
-  };
-
-  const onToggleInput = () => {
-    setShowInput(!showInput); // Mostrar u ocultar el input
   };
 
   return (
     <View style={[styles.activityButtonContainer, { backgroundColor: containerBackgroundColor }]}>
       <View style={styles.headerContainer}>
         <ThemedText style={styles.containerTextActivity}>Actividades</ThemedText>
-        <ButtonAddActivity onPress={onToggleInput} color={containerBackgroundColor} />
+        <ButtonAddActivity onPress={onAddPress} color={containerBackgroundColor} />
       </View>
       {showInput && (
         <View style={styles.addActivityContainer}>
@@ -67,7 +61,7 @@ const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activ
             value={newActivity}
             onChangeText={setNewActivity}
           />
-          <TouchableOpacity onPress={onAddActivity} style={styles.addButton}>
+          <TouchableOpacity onPress={onAddActivity} style={[styles.addButton, { backgroundColor: containerBackgroundColor }]}>
             <ThemedText style={styles.addButtonText}>Agregar</ThemedText>
           </TouchableOpacity>
         </View>

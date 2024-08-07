@@ -242,4 +242,10 @@ export const styles = StyleSheet.create({
     height: 140,
     textAlignVertical: 'top', 
   },
+  addActivityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
 });
