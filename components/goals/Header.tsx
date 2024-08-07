@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';//johannes
 import { View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { styles } from '@/styles/goalsStyles';
