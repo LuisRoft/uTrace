@@ -83,7 +83,7 @@ const ActivityButtonContainer: React.FC<ActivityButtonContainerProps> = ({ activ
         </View>
       ))}
     </View>
-  );//johannes
+  );
 };
 
 export default ActivityButtonContainer;
