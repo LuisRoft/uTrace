@@ -16,8 +16,14 @@ export default function SignUp() {
   const passwordRef = useRef("");
   const usernameRef = useRef("");
   const [loading, setLoading] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isIconVisible, setIsIconVisible] = useState(false);
   const {register} = useAuth();
 
+
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
   const handleRegister = async () => {
     if (!emailRef.current || !passwordRef.current || !usernameRef.current) {
@@ -34,7 +40,12 @@ export default function SignUp() {
     setLoading(false);
 
     console.log('results:', response);
-    if (!response.success) Alert.alert('Sign Up', response.msg);
+    if (response.success) {
+      Alert.alert('Sign Up', 'Correo de verificación enviado, revisa tu correo.');
+      router.push('/signIn'); // Navigate to the EmailVerification screen
+    } else {
+      Alert.alert('Sign Up', response.msg);
+    }
   }
 
 
@@ -76,10 +87,21 @@ export default function SignUp() {
                 placeholder="Contraseña"
                 style={{ fontSize: hp(2) }}
                 className="flex-1"
-                secureTextEntry 
+                secureTextEntry={!isPasswordVisible}
                 placeholderTextColor={'gray'}
-                onChangeText={(text) => passwordRef.current = text}
+                onChangeText={(text) => {
+                  passwordRef.current = text
+                  setIsIconVisible(text.length > 0)
+                }}
               />
+              { isIconVisible ? (
+                  <TouchableOpacity onPress={togglePasswordVisibility} style={{ padding: hp(2) }}>
+                    <Octicons
+                      name={isPasswordVisible ? "eye" : "eye-closed"}
+                      size={hp(2.7)}
+                    />
+                  </TouchableOpacity> ) : null
+                }
             </View>
             <View className="items-center">
               {

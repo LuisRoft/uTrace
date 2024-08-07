@@ -7,6 +7,7 @@ import { styles } from '@/styles/tabBarStyles';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 
 
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   return (
@@ -17,7 +18,7 @@ export default function TabLayout() {
     >
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].focused,
           headerShown: false,
           tabBarStyle: styles.tabBar,
         }}

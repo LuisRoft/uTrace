@@ -88,5 +88,13 @@ export const styles = StyleSheet.create({
       activeText: {
         color: '#ffffff',
     },
+      button:{
+        padding: 10,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        marginBottom: 10,
+      }
     }
 );

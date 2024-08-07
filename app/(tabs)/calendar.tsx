@@ -3,20 +3,20 @@ import { View, ScrollView, Modal, TouchableOpacity, Text } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Calendar, DateData } from 'react-native-calendars';
-import { styles as calendarStyles, customTheme } from '@/styles/calendarStyles';
-import { useUserSelections } from '@/hooks/useUserSelections';
+import { styles as calendarStyles, customTheme } from '@/styles/Calendar/calendarStyles';
+import { useUserSelections } from '@/context/UserSelectionsContext';
 import StateCards from '@/components/StateCard/StateCard';
-import { emotions } from '@/components/Emotions';
-import { PieChartComponent } from '@/components/PieChartComponent'; 
-import { Legend } from '@/components/Legend';
+import { emotions } from '@/components/Emotions/Emotions';
+import { PieChartComponent } from '@/components/Report/PieChartComponent'; 
+import { Legend } from '@/components/Report/Legend';
 import { useFetchEmotions, getEmotionDataForDate, EmotionData } from '@/hooks/useFetchEmotions';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function CalendarScreen() {
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [userSelections, loadingSelections] = useUserSelections();
-  const [, , , loadingEmotions, fetchEmotionDataForDate] = useFetchEmotions();
+  const { userSelections, loading, deleteUserSelection } = useUserSelections(); // Añadir deleteUserSelection aquí
+  const [,,, loadingEmotions] = useFetchEmotions(userSelections);
   const [activeTab, setActiveTab] = useState<string>('Emociones');
   const [selectedDateEmotionData, setSelectedDateEmotionData] = useState<EmotionData[]>([]);
   const { user } = useAuth();
@@ -24,12 +24,12 @@ export default function CalendarScreen() {
   useEffect(() => {
     const fetchData = async () => {
       if (user && selectedDate) {
-        const data = await fetchEmotionDataForDate(user.userId, selectedDate);
+        const data = await getEmotionDataForDate(user.userId, selectedDate);
         setSelectedDateEmotionData(data);
       }
     };
     fetchData();
-  }, [user, selectedDate, fetchEmotionDataForDate]);
+  }, [user, selectedDate, getEmotionDataForDate, userSelections]);
 
   const handleDayPress = (day: DateData) => {
     setSelectedDate(day.dateString);
@@ -38,17 +38,17 @@ export default function CalendarScreen() {
 
   const getMarkedDates = () => {
     const marked: any = {};
-    userSelections.forEach((selection) => {
+    userSelections.forEach((selection, index) => {
       const date = selection.date.split('T')[0];
       if (!marked[date]) {
         marked[date] = { dots: [] };
       }
       marked[date].dots.push({
-        key: `${selection.date}-${selection.selectedEmotion}`,
+        key: `${selection.date}-${selection.selectedEmotion}-${index}-${Math.random()}`,  // Clave única
         color: selection.backgroundColor, 
       });
     });
-  
+
     Object.keys(marked).forEach((date) => {
       marked[date].customStyles = {
         container: {
@@ -60,11 +60,25 @@ export default function CalendarScreen() {
         }
       };
     });
-  
+
     return marked;
   };
 
-  if (loadingSelections || loadingEmotions) {
+  const extractDateAndTime = (isoString: string) => {
+    const [datePart, timePart] = isoString.split('T');
+    const time = timePart.split('.')[0]; 
+    return { date: datePart, time };
+  };
+
+  const handleDeleteSelection = async (id: number) => {
+    try {
+      await deleteUserSelection(id);
+    } catch (error) {
+      console.error('Error eliminando datos: ', error);
+    }
+  };
+
+  if (loading || loadingEmotions) {
     return (
       <ThemedView style={calendarStyles.container}>
         <ThemedText>Cargando...</ThemedText>
@@ -121,15 +135,16 @@ export default function CalendarScreen() {
               {activeTab === 'Emociones' && userSelections
                 .filter((selection) => selection.date.split('T')[0] === selectedDate)
                 .map((selection, index) => {
+                  const { date, time } = extractDateAndTime(selection.date);
                   const emotionData = emotions[selection.selectedEmotion];
                   return (
                     <StateCards
-                      key={index}
+                      key={`${selection.date}-${selection.selectedEmotion}-${index}`}  
                       color={selection.backgroundColor}
                       colorFlag={selection.flagColor}
                       textColor={selection.textColor}
-                      date={selection.date}
-                      hour={selection.hour}
+                      date={date}
+                      hour={time}
                       emotion={selection.selectedEmotionButtons.join(', ')}
                       flags={selection.selectedEmotionButtons}
                       activities={selection.selectedActivityButtons.map((activity: string) => ({ activity, cost: 5 }))}
@@ -138,7 +153,10 @@ export default function CalendarScreen() {
                       backgroundColor={emotionData.backgroundColor}
                       imageUrl={''}
                       customWidth={260}
-                      customHeight={150} 
+                      customHeight={150}
+                      description={selection.description}  // Pasar la descripción aquí
+                      id={selection.id}  // Pasar el ID aquí
+                      onDelete={handleDeleteSelection}  // Pasar la función de eliminación aquí
                     />
                   );
                 })}
