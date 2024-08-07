@@ -1,6 +1,5 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -10,7 +9,7 @@ export const styles = StyleSheet.create({
     paddingTop: 50,
     backgroundColor: '#F9F4E2',
   },
-  constainerKeyBoard: {
+  constainerKeyBoard :{
     flex: 1,
   },
   containerText: {
@@ -34,6 +33,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     marginStart: 2,
+
     color: '#fff',
     alignItems: 'center',
     fontWeight: 'bold',
@@ -42,6 +42,7 @@ export const styles = StyleSheet.create({
     textShadowRadius: 3,
     elevation: 10,
   },
+
   activityButtonContainer: {
     paddingVertical: 3,
     paddingHorizontal: 30,
@@ -52,6 +53,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 10,
   },
+
   inner: {
     flex: 1,
     justifyContent: 'space-between',
@@ -75,20 +77,21 @@ export const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
+  
   emotionButtonContainer: {
-    width: '100%',
-    alignItems: 'center',
-    paddingVertical: 13,
-    borderWidth: 0,
-    borderColor: '#ddd',
-    borderRadius: 15,
-    marginBottom: 20,
-    backgroundColor: '#FFD700',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 10,
+      width: '100%',
+      alignItems: 'center',
+      paddingVertical: 13,
+      borderWidth: 0,
+      borderColor: '#ddd',
+      borderRadius: 15,
+      marginBottom: 20,
+      backgroundColor: '#FFD700',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 10,
   },
   buttonRow: {
     flexDirection: 'row',
@@ -105,20 +108,33 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: '#000',
   },
+  descriptionContainer: {
+    backgroundColor: '#FFD700',
+    padding: 10,
+    borderRadius: 15,
+    width: '100%', 
+    marginBottom: 100,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 10,
+  },
   scrollContainer: {
-    display: 'flex',
-    width: '100%',
-    alignItems: 'center',
+      display: 'flex',
+      width: '100%',
+      alignItems: 'center',
   },
   textInput: {
     backgroundColor: '#FFF',
     padding: 10,
     borderRadius: 15,
-    paddingHorizontal: 50,
-    marginTop: 10,
-    height: 100,
-    verticalAlign: 'top',
+    paddingHorizontal : 50,
+    marginTop: 10, 
+    height: 100, 
+    verticalAlign: 'top', 
   },
+
   buttonAdd: {
     width: 10,
     padding: 10,
@@ -140,6 +156,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   plusContainerActivity: {
     display: 'flex',
     left: 12,
@@ -152,6 +169,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   plusText: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -162,7 +180,7 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   selectedButton: {
-    backgroundColor: '#cccccc',
+    backgroundColor: '#cccccc', 
   },
   headerContainer: {
     flexDirection: 'row',
@@ -185,67 +203,5 @@ export const styles = StyleSheet.create({
     color: '#FFFF',
     fontWeight: 'bold',
     fontSize: 20,
-  },
-  addEmotionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  input: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    borderRadius: 15,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    marginRight: 10,
-    elevation: 4,
-    borderColor: '#ddd',
-    borderWidth: 1,
-  },
-  addButton: {
-    borderRadius: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    elevation: 4,
-    borderColor: '#ddd',
-    borderWidth: 1,
-  },
-  addButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-  },
-  page: {
-    width: SCREEN_WIDTH - 40,
-    paddingHorizontal: 10,
-  },
-  descriptionContainer: {
-    width: '100%',
-    height: 200,
-    marginTop: 20,
-    alignItems: 'center',
-    paddingHorizontal:50,
-    paddingVertical : 30,
-    borderRadius: 10,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-  },
-  descriptionInput: {
-    backgroundColor: '#FFF',
-    borderRadius: 10,
-    padding: 30,
-    width: 210 ,
-    height: 140,
-    textAlignVertical: 'top', 
-  },
-  addActivityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    paddingHorizontal: 10,
   },
 });
