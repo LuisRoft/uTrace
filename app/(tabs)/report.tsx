@@ -6,10 +6,11 @@ import { styles } from '@/styles/Emotions/activityStyles';
 import { styles as reportStyles } from '@/styles/Report/reportStyles';
 import { PieChartComponent } from '@/components/Report/PieChartComponent'; 
 import { Legend } from '@/components/Report/Legend';
-import { useFetchEmotions } from '@/hooks/useFetchEmotions';
+import { EmotionData, useFetchEmotions } from '@/hooks/useFetchEmotions';
 import { useUserSelections } from '@/context/UserSelectionsContext';
 import * as Print from 'expo-print';
-import { shareAsync } from 'expo-sharing';
+import * as FileSystem from 'expo-file-system'
+import * as Sharing from 'expo-sharing';
 
 export default function Report() {
   const { userSelections, fetchUserSelections } = useUserSelections();
@@ -33,30 +34,50 @@ export default function Report() {
     }
   };
 
-  const generatePieChartSVG = (data: any[]) => {
-    let total = data.reduce((sum, item) => sum + item.value, 0);
+  const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
+    const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+    return {
+      x: centerX + (radius * Math.cos(angleInRadians)),
+      y: centerY + (radius * Math.sin(angleInRadians))
+    };
+  };
+  
+  const generatePieChartSVG = (data: EmotionData[]): string => {
+    if (data.length === 0) {
+      return '<svg width="200" height="200" viewBox="0 0 200 200"><text x="100" y="100" text-anchor="middle">No data</text></svg>';
+    }
+  
+    if (data.length === 1) {
+      return `
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="100" fill="${data[0].color}" />
+        </svg>
+      `;
+    }
+  
+    const total = data.reduce((sum, item) => sum + item.value, 0);
     let startAngle = 0;
-    let paths: string[] = [];
-
+    const paths: string[] = [];
+  
     data.forEach((item) => {
-      let angle = (item.value / total) * 360;
-      let endAngle = startAngle + angle;
-      let largeArcFlag = angle > 180 ? 1 : 0;
+      const angle = (item.value / total) * 360;
+      const endAngle = startAngle + angle;
+      const largeArcFlag = angle > 180 ? 1 : 0;
       
-      let start = polarToCartesian(100, 100, 100, startAngle);
-      let end = polarToCartesian(100, 100, 100, endAngle);
-
-      let d = [
+      const start = polarToCartesian(100, 100, 100, startAngle);
+      const end = polarToCartesian(100, 100, 100, endAngle);
+  
+      const d = [
         "M", 100, 100,
-        "L", start.x, start.y,
-        "A", 100, 100, 0, largeArcFlag, 1, end.x, end.y,
+        "L", start.x.toFixed(2), start.y.toFixed(2),
+        "A", 100, 100, 0, largeArcFlag, 1, end.x.toFixed(2), end.y.toFixed(2),
         "Z"
       ].join(" ");
-
+  
       paths.push(`<path d="${d}" fill="${item.color}" />`);
       startAngle = endAngle;
     });
-
+  
     return `
       <svg width="200" height="200" viewBox="0 0 200 200">
         ${paths.join('')}
@@ -64,57 +85,132 @@ export default function Report() {
     `;
   };
 
-  const polarToCartesian = (centerX: number, centerY: number, radius: number, angleInDegrees: number) => {
-    var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-    return {
-      x: centerX + (radius * Math.cos(angleInRadians)),
-      y: centerY + (radius * Math.sin(angleInRadians))
-    };
-  };
-
   const printToFile = async () => {
     try {
       const activeData = getActiveData();
       const pieChartSVG = generatePieChartSVG(activeData);
-
+      console.log('DATAAAAAA: ', activeData)
       const html = `
-        <html>
-          <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-            <style>
-              body { font-family: system-ui; padding: 20px; vh: 100%;}
-              .title{ text-align: center; }
-              .chart-container { display: flex; justify-content: center; padding: 20px; border: 1px solid #000; }
-              .chart-info { margin-top: 20px; display: flex; flex-direction: column; align-items: center; font-size: 26px; }
-              .emotion-item { margin-bottom: 10px; }
-              .emotion-name { font-weight: bold; margin-right: 10px; }
-            </style>
-          </head>
-          <body>
-            <h1 class='title'>Reporte de Emociones - ${active}</h1>
-            <div class="chart-container">
-              ${pieChartSVG}
-            </div>
-            <div class="chart-info">
-              <h2>Detalles de las Emociones:</h2>
-              ${activeData.map(item => `
+        <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <title>Reporte de Emociones</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 30px;
+        }
+        .title { 
+            text-align: center;
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+        .chart-container { 
+            display: flex; 
+            justify-content: center; 
+            padding: 40px; 
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 30px;
+        }
+        .chart-info { 
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 15px;
+        }
+        .emotion-item { 
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        .emotion-item:hover {
+            transform: translateY(-3px);
+        }
+        .emotion-name { 
+            font-weight: bold; 
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .emotion-value {
+            font-size: 16px;
+        }
+        .logo {
+            display: block;
+            margin: 30px auto 0;
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class='title'>Reporte de Emociones - ${active}</h1>
+        <img src="https://i.imgur.com/guhp3rb.png" alt="logo" class="logo" />
+        <div class="chart-container">
+            ${pieChartSVG}
+        </div>
+        <h2>Detalles de las Emociones:</h2>
+        <div class="chart-info">
+            ${activeData.map(item => `
                 <div class="emotion-item">
-                  <span class="emotion-name" style="color: ${item.color};">${item.emotionName}:</span>
-                  <span class="emotion-value">${item.value}%</span>
+                    <span class="emotion-name" style="color: ${item.color};">${item.emotionName}:</span>
+                    <span class="emotion-value">${Number(item.value.toFixed(2))}%</span>
                 </div>
-              `).join('')}
-            </div>
-          </body>
-        </html>
+            `).join('')}
+        </div>        
+    </div>
+</body>
+</html>
       `;
-
-      const { uri: pdfUri } = await Print.printToFileAsync({ html });
-      await shareAsync(pdfUri, { UTI: '.pdf', mimeType: 'application/pdf' });
+          const response = await Print.printToFileAsync({html})      
+          const pdfName = `${response.uri.slice(
+              0,
+              response.uri.lastIndexOf('/') + 1
+          )}Reporte_De_Emociones.pdf`
+      
+          await FileSystem.moveAsync({
+              from: response.uri,
+              to: pdfName,
+          })
+          sharePdf(pdfName)
+  
+    
+    
     } catch (error) {
       console.error('Error al generar el PDF:', error);
     }
   };
-
+  const sharePdf = (url: string) => {
+    Sharing.shareAsync(url)
+}
   if (loading) {
     return (
       <ThemedView style={styles.container}>
