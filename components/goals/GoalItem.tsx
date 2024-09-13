@@ -1,17 +1,19 @@
 import React from 'react';
-import { View, TouchableOpacity, Alert } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { styles } from '@/styles/goalsStyles';
-import { Goal } from '@/components/goals/Goal'; // Importa la interfaz Goal
-
+import { Goal } from '@/components/goals/Goal';
+import Ionicons from '@expo/vector-icons/Ionicons';
+//johannes
 interface GoalItemProps {
   goal: Goal;
   handleGoalCompletion: (id: number, isCompleted: boolean) => void;
   handleDeleteGoal: (id: number) => void;
+  handleResetStreak: (id: number) => void; // Añade esta función
   isDeleteMode: boolean;
 }
 
-const GoalItem: React.FC<GoalItemProps> = ({ goal, handleGoalCompletion, handleDeleteGoal, isDeleteMode }) => {
+const GoalItem: React.FC<GoalItemProps> = ({ goal, handleGoalCompletion, handleDeleteGoal, handleResetStreak, isDeleteMode }) => {
   const calculateDaysLeftOrOverdue = () => {
     if (!goal.endDate) return '';
     const today = new Date();
@@ -37,32 +39,42 @@ const GoalItem: React.FC<GoalItemProps> = ({ goal, handleGoalCompletion, handleD
         <ThemedText style={styles.goalDate}>{calculateDaysLeftOrOverdue()}</ThemedText>
       )}
       <View style={styles.buttonContainer}>
-        {!goal.completedToday && (
+        {!goal.completedToday && !goal.streakLost && (
           <>
             <TouchableOpacity
               onPress={() => handleGoalCompletion(goal.id, true)}
               style={styles.markButton}
             >
-              <ThemedText style={styles.markButtonText}>✓</ThemedText>
+              <Ionicons name="checkmark-outline" size={24} color="#fff" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleGoalCompletion(goal.id, false)}
               style={[styles.markButton, styles.markButtonFail]}
             >
-              <ThemedText style={styles.markButtonText}>✗</ThemedText>
+              <Ionicons name="close-outline" size={24} color="#fff" />
             </TouchableOpacity>
           </>
         )}
-        {goal.completedToday && (
+        {goal.completedToday && !goal.streakLost && (
           <TouchableOpacity
             style={[
               styles.markButton,
               goal.completionType === 'success' ? {} : styles.markButtonFail
             ]}
           >
-            <ThemedText style={styles.markButtonText}>
-              {goal.completionType === 'success' ? '✓' : '✗'}
-            </ThemedText>
+            <Ionicons
+              name={goal.completionType === 'success' ? "checkmark-outline" : "close-outline"}
+              size={24}
+              color="#fff"
+            />
+          </TouchableOpacity>
+        )}
+        {goal.streakLost && (
+          <TouchableOpacity
+            onPress={() => handleResetStreak(goal.id)}
+            style={[styles.markButton, styles.resetButton]}
+          >
+            <Ionicons name="refresh-outline" size={24} color="#fff" />
           </TouchableOpacity>
         )}
         {isDeleteMode && (
@@ -70,7 +82,7 @@ const GoalItem: React.FC<GoalItemProps> = ({ goal, handleGoalCompletion, handleD
             onPress={() => handleDeleteGoal(goal.id)}
             style={styles.deleteButton}
           >
-            <ThemedText style={styles.markButtonText}>🗑</ThemedText>
+            <Ionicons name="trash-outline" size={24} color="#fff" />
           </TouchableOpacity>
         )}
       </View>

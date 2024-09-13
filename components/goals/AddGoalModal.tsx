@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { styles } from '@/styles/goalsStyles';
 import { Goal } from '@/components/goals/Goal'; // Importa la interfaz Goal
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+//johannes
 interface AddGoalModalProps {
   visible: boolean;
   onClose: () => void;
@@ -29,6 +29,7 @@ const AddGoalModal: React.FC<AddGoalModalProps> = ({ visible, onClose, onAddGoal
         completedToday: false,
         completionType: '',
         completed: false,
+        streakLost: false,
       });
       setNewGoal({ type: '', name: '', description: '', startDate: '', endDate: '' });
       setGoalType('');
@@ -94,23 +95,30 @@ const AddGoalModal: React.FC<AddGoalModalProps> = ({ visible, onClose, onAddGoal
                   onChange={handleStartDateChange}
                 />
               )}
-              <TouchableOpacity onPress={() => setShowEndDatePicker(true)} style={styles.datePickerButton} disabled={isNoEndDate}>
-                <ThemedText style={styles.datePickerButtonText}>
-                  {newGoal.endDate ? new Date(newGoal.endDate).toLocaleDateString() : 'Fecha de finalización'}
-                </ThemedText>
-              </TouchableOpacity>
-              {showEndDatePicker && (
-                <DateTimePicker
-                  value={newGoal.endDate ? new Date(newGoal.endDate) : new Date()}
-                  mode="date"
-                  display="default"
-                  onChange={handleEndDateChange}
-                />
+              {!isNoEndDate && (
+                <>
+                  <TouchableOpacity onPress={() => setShowEndDatePicker(true)} style={styles.datePickerButton}>
+                    <ThemedText style={styles.datePickerButtonText}>
+                      {newGoal.endDate ? new Date(newGoal.endDate).toLocaleDateString() : 'Fecha de finalización'}
+                    </ThemedText>
+                  </TouchableOpacity>
+                  {showEndDatePicker && (
+                    <DateTimePicker
+                      value={newGoal.endDate ? new Date(newGoal.endDate) : new Date()}
+                      mode="date"
+                      display="default"
+                      onChange={handleEndDateChange}
+                    />
+                  )}
+                </>
               )}
               <View style={styles.noEndDateContainer}>
                 <Switch
                   value={isNoEndDate}
-                  onValueChange={(value) => setIsNoEndDate(value)}
+                  onValueChange={(value) => {
+                    setIsNoEndDate(value);
+                    setNewGoal({ ...newGoal, endDate: value ? undefined : newGoal.endDate });
+                  }}
                 />
                 <ThemedText style={styles.noEndDateText}>Sin fecha límite</ThemedText>
               </View>

@@ -7,19 +7,22 @@ import Header from '@/components/goals/Header';
 import GoalItem from '@/components/goals/GoalItem';
 import AddGoalModal from '@/components/goals/AddGoalModal';
 import { ThemedText } from '@/components/ThemedText';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-interface Goal {
-  completed: unknown;
+export interface Goal {
   id: number;
   type: string;
   name: string;
   description: string;
   startDate: string;
-  endDate?: string; // Hacer que endDate sea opcional
+  endDate?: string;
   streak: number;
   lastCompleted: string;
   completedToday: boolean;
-  completionType: string; // 'success' or 'fail'
+  completionType: string;
+  completed?: boolean;
+  streakLost?: boolean;
+  streakGoal?: number;
 }
 
 const GoalsScreen: React.FC = () => {
@@ -45,12 +48,8 @@ const GoalsScreen: React.FC = () => {
   useEffect(() => {
     const today = new Date().toISOString().split('T')[0];
     const updatedGoals = goals.map(goal => {
-      if (goal.lastCompleted !== today && goal.completedToday) {
-        if (goal.completionType === 'success') {
-          return goal;
-        } else {
-          return { ...goal, streak: 0, completedToday: false, completionType: '' };
-        }
+      if (goal.type === 'Diario' && goal.lastCompleted !== today && goal.lastCompleted !== '' && !goal.streakLost) {
+        return { ...goal, completedToday: false, streakLost: true };
       }
       return goal;
     });
@@ -69,7 +68,17 @@ const GoalsScreen: React.FC = () => {
   };
 
   const handleAddGoal = (goal: Partial<Goal>) => {
-    const updatedGoals = [...goals, { ...goal, id: Date.now() } as Goal];
+    const newGoal: Goal = {
+      ...goal,
+      id: Date.now(),
+      streak: 0,
+      lastCompleted: '',
+      completedToday: false,
+      completionType: '',
+      completed: false,
+      streakLost: false, // Asegura que streakLost sea false al crear un objetivo
+    };
+    const updatedGoals = [...goals, newGoal];
     setGoals(updatedGoals);
     saveGoals(updatedGoals);
   };
@@ -78,17 +87,61 @@ const GoalsScreen: React.FC = () => {
     const today = new Date().toISOString().split('T')[0];
     const updatedGoals = goals.map(goal => {
       if (goal.id === id) {
-        if (goal.lastCompleted === today) {
+        if (goal.lastCompleted === today && !goal.streakLost) {
           Alert.alert('Error', 'Este objetivo ya ha sido marcado hoy.');
           return goal;
+        }
+        if (goal.type === 'Específico') {
+          if (!isCompleted) {
+            return {
+              ...goal,
+              completedToday: false,
+              streakLost: false,
+              completionType: 'fail',
+            };
+          }
+          return {
+            ...goal,
+            completed: true,
+            lastCompleted: today,
+            completedToday: true,
+          };
+        }
+        if (goal.streakLost) {
+          return {
+            ...goal,
+            streak: 1,
+            streakLost: false,
+            lastCompleted: today,
+            completedToday: true,
+            completionType: 'success',
+            completed: false,
+          };
         }
         return {
           ...goal,
           streak: isCompleted ? goal.streak + 1 : 0,
           lastCompleted: today,
           completedToday: true,
+          streakLost: !isCompleted,
           completionType: isCompleted ? 'success' : 'fail',
-          completed: isCompleted,
+          completed: isCompleted && goal.streakGoal && goal.streak >= goal.streakGoal,
+        };
+      }
+      return goal;
+    });
+    setGoals(updatedGoals);
+    saveGoals(updatedGoals);
+  };
+
+  const handleResetStreak = (id: number) => {
+    const updatedGoals = goals.map(goal => {
+      if (goal.id === id) {
+        return {
+          ...goal,
+          streak: 0,
+          streakLost: false,
+          completedToday: false,
         };
       }
       return goal;
@@ -132,15 +185,16 @@ const GoalsScreen: React.FC = () => {
       <Header onAddPress={() => setShowModal(true)} onDeletePress={toggleDeleteMode} />
       <ScrollView>
         <View style={styles.inner}>
-          {goals.filter(goal => goal.type === 'Diario' && !goal.completed).length > 0 && (
+          {goals.filter(goal => goal.type === 'Diario' && (!goal.completed || goal.streakLost)).length > 0 && (
             <>
               <ThemedText style={styles.subTitle}>Diarios</ThemedText>
-              {goals.filter(goal => goal.type === 'Diario' && !goal.completed).map((goal) => (
+              {goals.filter(goal => goal.type === 'Diario' && (!goal.completed || goal.streakLost)).map((goal) => (
                 <GoalItem
                   key={goal.id}
                   goal={goal}
                   handleGoalCompletion={handleGoalCompletion}
                   handleDeleteGoal={handleDeleteGoal}
+                  handleResetStreak={handleResetStreak}
                   isDeleteMode={isDeleteMode}
                 />
               ))}
@@ -160,11 +214,6 @@ const GoalsScreen: React.FC = () => {
               ))}
             </>
           )}
-          <TouchableOpacity onPress={toggleShowCompleted} style={styles.toggleCompletedButton}>
-            <ThemedText style={styles.toggleCompletedButtonText}>
-              {showCompleted ? 'Ocultar Completados' : 'Mostrar Completados'}
-            </ThemedText>
-          </TouchableOpacity>
           {showCompleted && goals.filter(goal => goal.completed).length > 0 && (
             <>
               <ThemedText style={styles.subTitle}>Completados</ThemedText>
@@ -173,11 +222,22 @@ const GoalsScreen: React.FC = () => {
                   key={goal.id}
                   goal={goal}
                   handleDeleteGoal={handleDeleteGoal}
+                  handleResetStreak={handleResetStreak}
                   isDeleteMode={isDeleteMode}
                 />
               ))}
             </>
           )}
+          <TouchableOpacity onPress={toggleShowCompleted} style={styles.toggleCompletedButton}>
+            <Ionicons
+              name={showCompleted ? "eye-off-outline" : "eye-outline"}
+              size={24}
+              color="#fff"
+            />
+            <ThemedText style={styles.toggleCompletedButtonText}>
+              {showCompleted ? 'Ocultar Completados' : 'Mostrar Completados'}
+            </ThemedText>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <AddGoalModal
@@ -190,3 +250,4 @@ const GoalsScreen: React.FC = () => {
 };
 
 export default GoalsScreen;
+//johannes
